@@ -25,6 +25,9 @@ It's extensible, so your developers can grow it in the direction your team is go
 model, on-prem or in any cloud, air-gapped if you need it, from supercomputers to embedded devices,
 with AI costs you control and any component yours to swap.
 
+It's written almost exclusively in [modern C++ (C++26)](https://github.com/homer6/cpp-docs), for
+maximum portability, distributed algorithms, and accelerator and device support.
+
 It's the same code that runs [lake.live](https://lake.live), and it's yours to build on.
 
 ## Install
