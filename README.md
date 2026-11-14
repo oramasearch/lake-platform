@@ -1,6 +1,6 @@
 <div align="center">
 
-# Orama Lake
+# Orama Lake - Own your AI
 
 ### The sovereign AI stack
 
@@ -26,15 +26,19 @@ It's the same code that runs [lake.live](https://lake.live), and it's yours to b
 
 ## Why Orama Lake
 
+Demoware AI and apps are easy. Productionizing them is hard. Orama Lake is the force multiplier 
+to productionize your apps, agents, data, and AI. One stack; infinite possibilities.
+
 Anyone who has put AI into a real production environment knows how it goes. The demo takes an
-afternoon. Then the real work starts.
+afternoon. Then, the real work starts.
 
 The data it needs can't leave the building. Security asks where every record goes, and deserves an
 answer. The model needs somewhere to run, and what it reads needs somewhere to live. There has to be
 search, sign-in, a place for the secrets, a way to build it and a way to deploy it. Each piece comes
 from somewhere different, and somebody has to make them work together and keep them working.
 
-> **You can't have AI, or intelligence, without data availability.**
+The promise of AI is the promise of a smarter, more intelligent world. But, true AI requires training
+(or learning) on YOUR data.
 
 The data that matters most is usually the data that can't be sent anywhere else. So the AI has to
 come to the data, and work inside the environment the data lives in, with all of its rules.
@@ -319,6 +323,10 @@ When the foundation is free, people spend their time on what only they can build
 We've laid the floor: the engine for your data, the source control, the workspace, the agents, the
 models, and the operator that runs them. What goes on top is yours.
 
+## Professional Services Available
+
+Metis is our professional services program. If you'd like some help designing or launching your AI and intelligence, we'd love to chat (even if you'd just like to say hello).  https://orama.com/journey
+
 ## License
 
 [MIT](LICENSE). Forks of third-party code keep their upstream licenses, and model weights carry their base
@@ -326,6 +334,6 @@ model's license.
 
 <div align="center">
 
-**Free sovereign AI, for everyone.**
+**Free, sovereign AI, for everyone.**
 
 </div>
