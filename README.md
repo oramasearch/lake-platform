@@ -250,7 +250,7 @@ The services a team would otherwise go and get one at a time are already in the 
 | **Try it** | On a laptop |
 | **Run it** | On one machine or a small cluster, [with k0s and the operator](docs/install/README.md#on-a-fresh-linux-machine) |
 | **Scale it** | On any Kubernetes cluster, [with the helmfile](docs/install/README.md#on-a-kubernetes-cluster-you-already-have) |
-| **Air-gapped** | From one bundle, with nothing fetched from outside ([the air-gapped variant](modules/orama-operator/docs/install/k0s.md#air-gapped-variant)) |
+| **Air-gapped** | From one bundle, with nothing fetched from outside ([the air-gapped variant](https://github.com/oramasearch/orama-operator/blob/main/docs/install/k0s.md#air-gapped-variant)) |
 
 ## Get the source
 
@@ -276,10 +276,10 @@ Each component's own README says how to build and test it.
 
 | Under `modules/` | What it groups |
 |---|---|
-| [`liquid-bridge`](modules/liquid-bridge) | **liquid**, **lake** and what runs beside them |
-| [`zetta-bridge`](modules/zetta-bridge) | **zetta**, the tunnel, and the agents and models |
-| [`orama-operator`](modules/orama-operator) | The operator |
-| [`agent-experiments`](modules/agent-experiments) · [`model-runtime`](modules/model-runtime) | An agent and the model runtime |
+| [`liquid-bridge`](https://github.com/oramasearch/liquid-bridge) | **liquid**, **lake** and what runs beside them |
+| [`zetta-bridge`](https://github.com/oramasearch/zetta-bridge) | **zetta**, the tunnel, and the agents and models |
+| [`orama-operator`](https://github.com/oramasearch/orama-operator) | The operator |
+| [`agent-experiments`](https://github.com/oramasearch/agent-experiments) · [`model-runtime`](https://github.com/oramasearch/model-runtime) | An agent and the model runtime |
 
 <details>
 <summary><b>In <code>liquid-bridge</code></b></summary>

@@ -13,10 +13,10 @@ Both are followed by the same last step: [declare a `LakeSet`](#run-a-lake-decla
 This page is the short form. The full procedures, with every check and every failure to look for,
 are in the operator's own documents:
 
-- [`install.md`](../../modules/orama-operator/docs/install.md): the helmfile path, step by step
-- [`install/k0s.md`](../../modules/orama-operator/docs/install/k0s.md): a fresh machine, and the
+- [`install.md`](https://github.com/oramasearch/orama-operator/blob/main/docs/install.md): the helmfile path, step by step
+- [`install/k0s.md`](https://github.com/oramasearch/orama-operator/blob/main/docs/install/k0s.md): a fresh machine, and the
   air-gapped variant
-- [`install/credentials.md`](../../modules/orama-operator/docs/install/credentials.md): pull
+- [`install/credentials.md`](https://github.com/oramasearch/orama-operator/blob/main/docs/install/credentials.md): pull
   credentials, and what to check when a pod does not start
 
 ## Before you start
@@ -41,7 +41,7 @@ are in the operator's own documents:
 
 - **Access to the images.** If your registry needs a credential to pull `oramasearch/orama-operator`
   and `oramasearch/lake`, create a pull Secret in each namespace that runs them
-  ([`install/credentials.md`](../../modules/orama-operator/docs/install/credentials.md)). An
+  ([`install/credentials.md`](https://github.com/oramasearch/orama-operator/blob/main/docs/install/credentials.md)). An
   air-gapped install carries the images in a bundle instead.
 
 ## On a Kubernetes cluster you already have
@@ -72,7 +72,7 @@ The first command installs what the operator builds on, each chart pinned to a v
 `helmfile.yaml`: the Postgres operator, the ingress controller, the certificate manager, the
 operators for the managed data services, and monitoring. If your cluster already provides one of
 them, leave it out with a selector
-([`install.md`](../../modules/orama-operator/docs/install.md#1-prepare-registry-access-and-platform-controllers)).
+([`install.md`](https://github.com/oramasearch/orama-operator/blob/main/docs/install.md#1-prepare-registry-access-and-platform-controllers)).
 The second installs the operator with all of its resource kinds.
 
 Check it:
@@ -105,7 +105,7 @@ machine with one test Lake, printing the address it answers on. `hack/lake-on-k0
 removes it. The Lakes you run are declared in a [`LakeSet`](#run-a-lake-declare-a-lakeset).
 
 To run each step yourself, or to install with no network access at all, follow
-[`install/k0s.md`](../../modules/orama-operator/docs/install/k0s.md). The air-gapped variant
+[`install/k0s.md`](https://github.com/oramasearch/orama-operator/blob/main/docs/install/k0s.md). The air-gapped variant
 prepares one image bundle on a connected machine and installs from it with nothing fetched from
 outside.
 
@@ -162,7 +162,7 @@ spec:
 ```
 
 The charts are listed in the operator's
-[sample](../../modules/orama-operator/config/samples/leaf-nonprod-operator.yaml).
+[sample](https://github.com/oramasearch/orama-operator/blob/main/config/samples/leaf-nonprod-operator.yaml).
 
 ### 3. The set
 
@@ -211,9 +211,9 @@ What a set gives you:
 | Run a Lake in another region | Add a cluster there, and a member on it |
 
 Every field is in the operator's
-[resource reference](../../modules/orama-operator/docs/crd-reference.md), and the procedures are in
-its [operations guide](../../modules/orama-operator/docs/infrastructure/operations.md) and
-[infrastructure guide](../../modules/orama-operator/docs/infrastructure/README.md).
+[resource reference](https://github.com/oramasearch/orama-operator/blob/main/docs/crd-reference.md), and the procedures are in
+its [operations guide](https://github.com/oramasearch/orama-operator/blob/main/docs/infrastructure/operations.md) and
+[infrastructure guide](https://github.com/oramasearch/orama-operator/blob/main/docs/infrastructure/README.md).
 
 ## Remove it
 

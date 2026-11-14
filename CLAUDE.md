@@ -194,6 +194,10 @@ zetta, not by a readiness endpoint alone.
 - Commit, then push. A commit that stays local is invisible to everyone and breaks pins.
 - When you touch a folder, update its `README.md` in the same change. A new module or a new top-level
   folder also updates the root `README.md` and the layout above.
+- **A link to a file inside a submodule is a full URL to that component's repository**
+  (`https://github.com/oramasearch/<component>/blob/main/<path>`), never a relative path through
+  `modules/`. A relative path works in a local checkout and is a broken link on the code host, which
+  shows a submodule as a pointer, not as files.
 - Documents are Markdown files in the repository that owns the subject. A document that spans
   components goes here, under `docs/`.
 
