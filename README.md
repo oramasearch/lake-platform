@@ -28,9 +28,8 @@ with AI costs you control and any component yours to swap.
 It's written almost exclusively in [modern C++ (C++26)](https://github.com/homer6/cpp-docs), for
 maximum portability, distributed algorithms, and accelerator and device support. Every AI model runs
 on CPU, and uses custom GPU kernels to support any accelerator, for distributed training and
-inference. Training and inference can be hybrid, across different platforms and accelerators.
-
-With zetta, you can combine a "sky cluster" with private, firewalled nodes in one super cluster, for
+inference. Training and inference can be hybrid, across different platforms and accelerators. With 
+zetta, you can combine a "sky cluster" with private, firewalled nodes in one super cluster, for
 a hybrid of on-prem and cloud.
 
 It's the same code that runs [lake.live](https://lake.live), and it's yours to build on.
