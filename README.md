@@ -338,7 +338,7 @@ models, and the operator that runs them. What goes on top is yours.
 
 ## License
 
-MIT. Forks of third-party code keep their upstream licenses, and model weights carry their base
+[MIT](LICENSE). Forks of third-party code keep their upstream licenses, and model weights carry their base
 model's license.
 
 <div align="center">
