@@ -29,13 +29,11 @@ It's the same code that runs [lake.live](https://lake.live), and it's yours to b
 
 ## Install
 
-| You have | Do this |
+| | |
 |---|---|
-| **A Kubernetes cluster** | [Install with the helmfile](docs/install/README.md#on-a-kubernetes-cluster-you-already-have): the platform charts and the operator, in one command |
-| **A fresh Linux machine** | [Install with k0s](docs/install/README.md#on-a-fresh-linux-machine): Kubernetes, the charts and the operator, from one script |
+| [**One cluster**](docs/install/README.md#one-cluster) | Everything on a single cluster. On a cluster you already have, it is the helmfile and one resource. On a fresh Linux machine, it is one script. |
+| [**Management cluster**](docs/install/README.md#management-cluster) | One cluster that creates and runs the others. You declare clusters and a `LakeSet`, and the operator keeps your Lakes running on dedicated clusters. |
 
-Then [declare a `LakeSet`](docs/install/README.md#run-a-lake-declare-a-lakeset): one template and a
-list of Lakes, which the operator creates, upgrades and keeps running.
 The whole guide is [`docs/install/`](docs/install/README.md).
 
 ## Why Orama Lake
@@ -249,7 +247,7 @@ The services a team would otherwise go and get one at a time are already in the 
 |---|---|
 | **Try it** | On a laptop |
 | **Run it** | On one machine or a small cluster, [with k0s and the operator](docs/install/README.md#on-a-fresh-linux-machine) |
-| **Scale it** | On any Kubernetes cluster, [with the helmfile](docs/install/README.md#on-a-kubernetes-cluster-you-already-have) |
+| **Scale it** | On any Kubernetes cluster, [with the helmfile](docs/install/README.md#management-cluster) |
 | **Air-gapped** | From one bundle, with nothing fetched from outside ([the air-gapped variant](https://github.com/oramasearch/orama-operator/blob/main/docs/install/k0s.md#air-gapped-variant)) |
 
 ## Get the source

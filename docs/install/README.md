@@ -1,127 +1,105 @@
 # Install Orama Lake
 
-Two ways to install the first cluster, and they end in the same place: a management cluster running
-the operator. From there you declare your Lakes in a `LakeSet`, and the operator runs them.
+Pick one. Both install the same operator from the same helmfile, so a one-cluster install can grow
+into a management cluster later.
 
-| You have | Use | What it installs |
+| | What you get | Use it for |
 |---|---|---|
-| A Kubernetes cluster | [The helmfile](#on-a-kubernetes-cluster-you-already-have) | The platform charts and the operator, in one command |
-| A fresh Linux machine | [k0s and the helmfile's charts](#on-a-fresh-linux-machine) | Kubernetes itself, then the same charts and the operator, from one script |
-
-Both are followed by the same last step: [declare a `LakeSet`](#run-a-lake-declare-a-lakeset).
-
-This page is the short form. The full procedures, with every check and every failure to look for,
-are in the operator's own documents:
-
-- [`install.md`](https://github.com/oramasearch/orama-operator/blob/main/docs/install.md): the helmfile path, step by step
-- [`install/k0s.md`](https://github.com/oramasearch/orama-operator/blob/main/docs/install/k0s.md): a fresh machine, and the
-  air-gapped variant
-- [`install/credentials.md`](https://github.com/oramasearch/orama-operator/blob/main/docs/install/credentials.md): pull
-  credentials, and what to check when a pod does not start
+| [**One cluster**](#one-cluster) | Everything on a single cluster: the operator and a Lake | Trying it, a small team, one machine, an air-gapped box |
+| [**Management cluster**](#management-cluster) | One cluster that creates and runs others, with your Lakes on dedicated clusters | Production, several regions, a Lake per team or customer |
 
 ## Before you start
 
-- **The source**, with the operator checked out:
+Get the source, and read the versions that work together from its pins:
 
-  ```sh
-  git clone https://github.com/oramasearch/lake-platform.git
-  cd lake-platform
-  git submodule update --init modules/orama-operator
-  ```
+```sh
+git clone https://github.com/oramasearch/lake-platform.git
+cd lake-platform
+git submodule update --init modules/orama-operator modules/liquid-bridge
+git -C modules/liquid-bridge submodule update --init modules/lake modules/k0s
 
-- **The versions.** A commit of this repository is one set of versions that work together. Read them
-  from the pins and use them wherever this page says `<operator-version>` and `<lake-version>`:
+git -C modules/orama-operator describe --tags               # <operator-version>
+git -C modules/liquid-bridge/modules/lake describe --tags   # <lake-version>
+```
 
-  ```sh
-  git -C modules/orama-operator describe --tags          # the operator
-  git submodule update --init modules/liquid-bridge
-  git -C modules/liquid-bridge submodule update --init modules/lake
-  git -C modules/liquid-bridge/modules/lake describe --tags   # lake
-  ```
+If your registry needs a credential to pull the images, create the pull Secret first
+([credentials](https://github.com/oramasearch/orama-operator/blob/main/docs/install/credentials.md)).
 
-- **Access to the images.** If your registry needs a credential to pull `oramasearch/orama-operator`
-  and `oramasearch/lake`, create a pull Secret in each namespace that runs them
-  ([`install/credentials.md`](https://github.com/oramasearch/orama-operator/blob/main/docs/install/credentials.md)). An
-  air-gapped install carries the images in a bundle instead.
+## One cluster
 
-## On a Kubernetes cluster you already have
+### On a Kubernetes cluster you already have
 
 You need Kubernetes 1.29 or later, a default StorageClass, and `kubectl`, Helm 3 and
-[helmfile](https://helmfile.readthedocs.io/) on your machine.
+[helmfile](https://helmfile.readthedocs.io/).
 
-Pin the operator's version in a values file:
+**1. Install the platform and the operator.**
 
 ```sh
 cd modules/orama-operator
-cat > operator-values.yaml <<EOF
-operator:
-  image:
-    repository: oramasearch/orama-operator
-    tag: "<operator-version>"
-EOF
-```
-
-Install the platform charts, then the operator:
-
-```sh
 helmfile -l app!=orama-operator sync --wait --concurrency 1
-helmfile -l app=orama-operator sync --values "$PWD/operator-values.yaml" --wait
+helmfile -l app=orama-operator sync --wait --set operator.image.tag=<operator-version>
 ```
 
-The first command installs what the operator builds on, each chart pinned to a version in
-`helmfile.yaml`: the Postgres operator, the ingress controller, the certificate manager, the
-operators for the managed data services, and monitoring. If your cluster already provides one of
-them, leave it out with a selector
-([`install.md`](https://github.com/oramasearch/orama-operator/blob/main/docs/install.md#1-prepare-registry-access-and-platform-controllers)).
-The second installs the operator with all of its resource kinds.
+**2. Run a Lake.** Save this as `lake.yaml`:
 
-Check it:
-
-```sh
-kubectl -n orama-system rollout status deployment/orama-operator --timeout=10m
-kubectl get crd lakesets.orama.cloud
+```yaml
+apiVersion: orama.cloud/v1alpha1
+kind: Lake
+metadata:
+  name: main
+spec:
+  namespace: lake
+  image: oramasearch/lake:<lake-version>
+  replicas: 1
+  store: {size: 100Gi, accessModes: [ReadWriteOnce]}
+  postgres: {instances: 1, storageSize: 50Gi}
 ```
 
-Then [declare a `LakeSet`](#run-a-lake-declare-a-lakeset).
+```sh
+kubectl apply -f lake.yaml
+kubectl wait lake/main --for=condition=Ready --timeout=15m
+```
 
-## On a fresh Linux machine
-
-Use this when there is no cluster yet: one machine, or the first machine of a small cluster. It
-installs the k0s distribution this platform ships, which brings the networking, the gateway and the
-local storage class the rest expects. A stock k0s binary is not a substitute.
-
-You need a dedicated Linux host with no existing `/var/lib/k0s`, and Git, curl, Helm 3, GNU Make and
-Go on it.
+**3. Open it.**
 
 ```sh
-git -C modules/liquid-bridge submodule update --init modules/k0s
+kubectl -n lake port-forward service/lake-main 4900:80
+curl -fsS http://127.0.0.1:4900/readyz
+```
+
+For a public address, add `ingressEnabled: true` and `host` to the Lake.
+
+### On a fresh Linux machine
+
+No cluster yet: one script installs Kubernetes (the k0s distribution this platform ships), the
+platform, the operator and a Lake, and prints the address it answers on. You need a Linux host with
+no existing `/var/lib/k0s`, and Git, curl, Helm 3, GNU Make and Go.
+
+```sh
 cd modules/liquid-bridge/modules/k0s
 sudo OPERATOR_CHART="$OLDPWD/modules/orama-operator/chart" hack/lake-on-k0s/install.sh
 ```
 
-The script builds and installs k0s, waits for the node and every component of the distribution,
-installs the Postgres operator, the certificate manager and the operator's chart, and proves the
-machine with one test Lake, printing the address it answers on. `hack/lake-on-k0s/teardown.sh`
-removes it. The Lakes you run are declared in a [`LakeSet`](#run-a-lake-declare-a-lakeset).
+`hack/lake-on-k0s/teardown.sh` removes it. To install with no network access at all, follow the
+[air-gapped variant](https://github.com/oramasearch/orama-operator/blob/main/docs/install/k0s.md#air-gapped-variant).
 
-To run each step yourself, or to install with no network access at all, follow
-[`install/k0s.md`](https://github.com/oramasearch/orama-operator/blob/main/docs/install/k0s.md). The air-gapped variant
-prepares one image bundle on a connected machine and installs from it with nothing fetched from
-outside.
+## Management cluster
 
-## Run a Lake: declare a LakeSet
+The management cluster runs no Lake of its own. You declare clusters and Lakes on it as resources,
+and its operator creates them and keeps them as declared. You never write a `Lake` here: a
+**`LakeSet`** does it, for one Lake or for many.
 
-You never write a `Lake` yourself. You declare a **`LakeSet`** on the management cluster: one
-template, and a list of members. Each member is one Lake on one cluster, in its own namespace. The
-management cluster's operator applies every member to its cluster, and that cluster's own operator
-runs it. Versions, settings and secrets are managed in one place, for one Lake or for many.
+**1. Install the platform and the operator** on the cluster that will manage the others. It is the
+same step as above:
 
-It takes three resources, applied to the management cluster in this order.
+```sh
+cd modules/orama-operator
+helmfile -l app!=orama-operator sync --wait --concurrency 1
+helmfile -l app=orama-operator sync --wait --set operator.image.tag=<operator-version>
+```
 
-### 1. A cluster
-
-A `KubernetesCluster` says what cluster you want. The operator creates it and keeps it as declared.
-It names a `KubernetesClusterProvider`, written once per cloud account.
+**2. Declare a cluster.** The operator creates it, then installs the same platform and the same
+operator on it. Save as `cluster.yaml` and `kubectl apply -f` it:
 
 ```yaml
 apiVersion: orama.cloud/v1alpha1
@@ -129,7 +107,7 @@ kind: KubernetesCluster
 metadata:
   name: lake-cluster-01
 spec:
-  providerRef: my-cloud-account
+  providerRef: my-cloud-account      # a KubernetesClusterProvider, written once per account
   region: westus2
   kubernetesVersion: "1.35"
   deletionPolicy: Retain
@@ -137,21 +115,7 @@ spec:
     - {name: system, role: system, machineSize: Standard_D8as_v7, minCount: 1, maxCount: 5}
   tags:
     purpose: production
-```
-
-Every member of one set runs on clusters with the same `purpose` tag, so a set never mixes
-production with anything else.
-
-The provider type available today is `aks`. A set's member names a `KubernetesCluster`, so a set
-cannot yet place a Lake on a cluster the operator did not create, the management cluster included.
-
-### 2. The platform and the operator on it
-
-A `ClusterHelmRelease` per platform chart, and one `OramaOperator`. They install on the new cluster
-exactly what the helmfile installed on the management cluster: the same charts, the same versions,
-the same operator.
-
-```yaml
+---
 apiVersion: orama.cloud/v1alpha1
 kind: OramaOperator
 metadata:
@@ -161,10 +125,13 @@ spec:
   version: <operator-version>
 ```
 
-The charts are listed in the operator's
-[sample](https://github.com/oramasearch/orama-operator/blob/main/config/samples/leaf-nonprod-operator.yaml).
+The provider and the platform charts for the new cluster are in the operator's samples:
+[the provider and cluster](https://github.com/oramasearch/orama-operator/blob/main/config/samples/kubernetescluster-nonprod.yaml),
+[the charts and operator](https://github.com/oramasearch/orama-operator/blob/main/config/samples/leaf-nonprod-operator.yaml).
+The provider type available today is `aks`.
 
-### 3. The set
+**3. Declare your Lakes.** One template, and a list of members. Each member is one Lake on one
+cluster, in its own namespace. Save as `lakeset.yaml` and `kubectl apply -f` it:
 
 ```yaml
 apiVersion: orama.cloud/v1alpha1
@@ -172,16 +139,15 @@ kind: LakeSet
 metadata:
   name: lake-prod
 spec:
-  template:                    # a Lake's settings, the default for every member
+  template:                    # the default for every member
     image: oramasearch/lake:<lake-version>
     ingressEnabled: true
     postgres: {instances: 1, storageSize: 50Gi}
     store: {size: 100Gi, accessModes: [ReadWriteOnce]}
-  clusters:                    # the members, independent of each other
+  clusters:
     - clusterRef: lake-cluster-01
       name: main
-      spec:
-        host: lake.example.com
+      spec: {host: lake.example.com}
     - clusterRef: lake-cluster-01
       name: team-a             # a dedicated Lake, with its own settings
       spec:
@@ -189,38 +155,27 @@ spec:
         postgres: {instances: 3}
 ```
 
-Apply it and watch it:
-
 ```sh
-kubectl apply -f lakeset.yaml
 kubectl get lakeset lake-prod
 ```
 
-The set reports how many members are ready, the version each one runs, and each member's own reason
-when it is not ready.
-
-What a set gives you:
+From then on, everything is a change to the set:
 
 | To | Do this |
 |---|---|
 | Add a Lake | Add a member |
 | Upgrade every Lake | Change `template.image` |
 | Hold one Lake at a version | Set `image` in that member's `spec` |
-| Change one Lake's settings | Set them in that member's `spec`; it is merged over the template |
-| Give Lakes their credentials | List the Secrets under `secrets`; the set copies them into each member's namespace |
-| Run a Lake in another region | Add a cluster there, and a member on it |
+| Run a Lake in another region | Declare a cluster there, and add a member on it |
 
-Every field is in the operator's
-[resource reference](https://github.com/oramasearch/orama-operator/blob/main/docs/crd-reference.md), and the procedures are in
-its [operations guide](https://github.com/oramasearch/orama-operator/blob/main/docs/infrastructure/operations.md) and
-[infrastructure guide](https://github.com/oramasearch/orama-operator/blob/main/docs/infrastructure/README.md).
+A set's members run on clusters the operator created. It cannot yet place a Lake on the management
+cluster itself, which is why the one-cluster install writes its Lake directly.
 
-## Remove it
+## More
 
-Removing a member from a set, or deleting the set, leaves its Lakes running unless the set says
-`deletionPolicy: Delete`. A Lake's volumes are kept when it is deleted; review them before deleting
-a claim. A `KubernetesCluster` is destroyed or kept according to its own `deletionPolicy`.
+The full procedures, with every check and every failure to look for, are the operator's:
 
-```sh
-helm uninstall orama-operator -n orama-system
-```
+- [The helmfile install, step by step](https://github.com/oramasearch/orama-operator/blob/main/docs/install.md)
+- [A fresh machine with k0s, and air-gapped](https://github.com/oramasearch/orama-operator/blob/main/docs/install/k0s.md)
+- [Clusters, sets and day-to-day operations](https://github.com/oramasearch/orama-operator/blob/main/docs/infrastructure/operations.md)
+- [Every resource and field](https://github.com/oramasearch/orama-operator/blob/main/docs/crd-reference.md)
