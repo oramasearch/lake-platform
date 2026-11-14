@@ -228,89 +228,97 @@ The services a team would otherwise go and get one at a time are already in the 
 
 ## What it replaces
 
-A team shipping AI usually buys or assembles each of these separately, then spends its time making
-them work together. Orama Lake puts them in one stack, on your own hardware, under one sign-in and
-one API.
+Orama Lake replaces Palantir, Databricks, Snowflake, Railway, GitHub, Git and the long list of
+services around them. A team shipping AI usually buys each of these separately, then spends its time
+making them work together. Here they are one stack, on your own hardware, under one sign-in and one
+API.
 
 ### AI: agents, models and training data
 
-| Instead of | You have |
-|---|---|
-| An agent builder | **agent-creator**: describe the agent and it builds it, and **agent-runtime** runs every agent you create |
-| A chat assistant over your company's data | **Ask Orama**, on every page of lake |
-| An app builder | **agent-application**: builds web and data apps from a description, commits them and deploys them |
-| Consultants to scope what is worth building | **agent-autosuggest**: reads your situation and your data, and proposes what to build |
-| A pipeline and solution engineering team | **agent-project**: builds and operates solutions and pipelines |
-| An AutoML and experiment service | **agent-experiments** and zetta's AutoML studies, with experiment tracking |
-| An evaluation service for language models | **agent-eval-generator**: writes the test cases agents are measured against |
-| Bought or labelled training data | Generated training corpora, and differentially private synthetic data |
-| Hosted model APIs | **base-agent-0.6b**, a base model you run yourself |
-| Rented training and inference | **model-runtime**: train and infer behind one interface, on any accelerator |
-| A fine-tuning service | zetta training, with reinforcement learning from verifiable rewards |
-| A machine-learning platform | zetta and lake: distributed training, explanations, calibration, methodologies, a model registry, model import |
-| Model serving | lake models: prediction behind keys, origins and traffic controls |
-| A model and dataset hub | lake's hub, which the standard hub client talks to |
-| A language-model gateway with metering | lake's model gateway, with token metering |
-| MCP servers and gateways | Every capability of lake and zetta served as MCP, and an MCP client with per-tool approval |
-| A decision platform | zetta's decision-policy engine: versioned policies, approvals, holdouts, a ledger and return on investment |
+| Replaces | Such as | With |
+|---|---|---|
+| A decision platform | Palantir Foundry and AIP | zetta's decision-policy engine: versioned policies, approvals, holdouts, a ledger and return on investment, with apps and agents on top |
+| A machine-learning platform | AWS SageMaker, Vertex AI, Databricks ML, MLflow | zetta and lake: distributed training, explanations, calibration, methodologies, experiments, a model registry, model import |
+| Agent builders | OpenAI Agents and Assistants, Microsoft Copilot Studio, LangGraph Platform | **agent-creator** builds the agent you describe, and **agent-runtime** runs every agent you create |
+| A chat assistant over your company's data | ChatGPT Enterprise, Microsoft Copilot, Glean | **Ask Orama**, on every page of lake |
+| App builders | Lovable, Bolt, Retool, Streamlit Community Cloud | **agent-application**: builds web and data apps from a description, commits them and deploys them |
+| Scoping what is worth building | Consultancies, solution architects | **agent-autosuggest**: reads your situation and your data, and proposes what to build |
+| Pipeline and solution engineering | Data engineering teams and contractors | **agent-project**: builds and operates solutions and pipelines |
+| AutoML and experiment design | DataRobot, H2O Driverless AI, Vertex AutoML | **agent-experiments** and zetta's AutoML studies, with experiment tracking |
+| Evaluation of language models | Braintrust, LangSmith, Patronus | **agent-eval-generator**: writes the test cases agents are measured against |
+| Bought or labelled training data | Scale AI, Surge AI | Generated training corpora |
+| Synthetic data | Gretel, Mostly AI | zetta's differentially private synthetic data |
+| Hosted model APIs | The OpenAI, Anthropic and Google Gemini APIs | **base-agent-0.6b**, a base model you run yourself |
+| Rented training and inference | Together AI, Fireworks, Modal, Replicate | **model-runtime**: train and infer behind one interface, on any accelerator |
+| Fine-tuning services | OpenAI fine-tuning, Databricks Mosaic AI | zetta training, with reinforcement learning from verifiable rewards |
+| Model serving | SageMaker endpoints, Baseten | lake models: prediction behind keys, origins and traffic controls |
+| A model and dataset hub | Hugging Face Hub, Weights & Biases artifacts | lake's hub, which the standard hub client talks to |
+| A language-model gateway with metering | OpenRouter, Portkey, LiteLLM | lake's model gateway, with token metering |
+| MCP servers and gateways | Hosted MCP gateways | Every capability of lake and zetta served as MCP, and an MCP client with per-tool approval |
+| Speech-to-text | Otter, AssemblyAI | lake transcripts |
 
 ### Data
 
-| Instead of | You have |
-|---|---|
-| A cloud warehouse or lakehouse | **zetta**: a replicated store, partitioned tables, SQL, distributed dataframes, compute next to the data |
-| A streaming platform and event bus | zetta topics, or Kafka as a lake service |
-| Connectors | lake connections to the databases you already run |
-| Pipelines and orchestration | zetta pipelines, written from intent or in Python, with a correctness gate |
-| Workflow automation | zetta pipelines that import and run workflow definitions, and agents that run on schedules and from streams |
-| Managed databases | lake services: Postgres, TiDB, Cassandra, Valkey, Kafka, ClickHouse and zetta itself |
-| Small hosted SQL | lake-sqlite, lake-duckdb and lake-polars |
-| Full-text search | zetta's ranked search, and lake search indexes |
-| Code search | liquid's code search |
+| Replaces | Such as | With |
+|---|---|---|
+| A cloud warehouse | Snowflake, BigQuery, Redshift | **zetta**: a replicated store, partitioned tables, SQL, distributed dataframes, compute next to the data |
+| A lakehouse | Databricks, Dremio | zetta |
+| Streaming and an event bus | Confluent, Kinesis, Pub/Sub | zetta topics, or Kafka as a lake service |
+| Connectors | Fivetran, Airbyte | lake connections to the databases you already run |
+| Pipelines and orchestration | dbt, Airflow, Dagster | zetta pipelines, written from intent or in Python, with a correctness gate |
+| Workflow automation | n8n, Zapier, Make | zetta pipelines that import and run n8n workflows, and agents that run on schedules and from streams |
+| Managed databases | Neon, Supabase, PlanetScale, Aiven, RDS | lake services: Postgres, TiDB, Cassandra, Valkey and zetta itself |
+| Managed Kafka and ClickHouse | Confluent Cloud, ClickHouse Cloud | lake services |
+| Small hosted SQL | MotherDuck, Turso | lake-sqlite, lake-duckdb and lake-polars |
+| Full-text search | Algolia, Elastic | zetta's ranked search, and lake search indexes |
+| Code search | Sourcegraph | liquid's code search |
 
 ### Developer platform
 
-| Instead of | You have |
-|---|---|
-| Version control and large-file storage | **liquid** |
-| Code hosting and review | lake's repositories |
-| CI/CD | liquid: build, test and verify on every write, deploys and previews from a change |
-| Remote builds and build caches | liquid, which rebuilds only what changed |
-| Image builds | lake builds |
-| Package and container registries | lake's registry: containers, npm, Python and debug symbols |
-| Artifact storage | liquid and lake's store |
-| Packaging for each operating system | liquid's packages for Linux, containers and Windows |
-| Supply-chain signing | Signed provenance, bills of materials and a transparency log, in liquid and lake |
-| Secret scanning | liquid |
-| An IDE | **liquify** |
+| Replaces | Such as | With |
+|---|---|---|
+| Version control | Git, Git LFS, Perforce | **liquid** |
+| Code hosting and review | GitHub, GitLab, Bitbucket | lake's repositories |
+| CI/CD | GitHub Actions, GitLab CI, CircleCI, Jenkins | liquid: build, test and verify on every write, deploys and previews from a change |
+| Builds and remote execution | Bazel, Nix, BuildBuddy, EngFlow | liquid, which rebuilds only what changed |
+| Image builds | Docker Build Cloud, Depot | lake builds |
+| Package registries | npm, PyPI, JFrog Artifactory, Sonatype Nexus, GitHub Packages | lake's registry: containers, npm, Python and debug symbols |
+| A container registry | Docker Hub, GHCR, ECR, ACR | lake's registry |
+| Artifact storage | Artifactory | liquid and lake's store |
+| Packaging | packagecloud, fpm | liquid's packages for Linux, containers and Windows |
+| Supply-chain signing | Sigstore services, Chainguard | Signed provenance, bills of materials and a transparency log, in liquid and lake |
+| Secret scanning | GitGuardian | liquid |
+| An IDE | VS Code, JetBrains, Cursor | **liquify** |
 
 ### Hosting and infrastructure
 
-| Instead of | You have |
-|---|---|
-| An app hosting platform | lake apps, deployed by liquid |
-| Preview environments | A preview per change |
-| Kubernetes fleet management | **The operator**: clusters as resources, always reconciled |
-| Infrastructure as code tooling | Infrastructure as software ([above](#infrastructure-as-software)) |
-| Tunnels | **zetta-tunnel** |
-| Private networking and a service mesh | zetta-tunnel's mutual-TLS mesh |
-| Ingress | zetta-tunnel's ingress |
-| An observability service | Metrics, logs and dashboards in the platform |
-| Status pages | A status page as a resource |
-| Object storage | lake's bucket stores |
+| Replaces | Such as | With |
+|---|---|---|
+| App hosting | Railway, Heroku, Render, Fly.io | lake apps, deployed by liquid |
+| Previews | Vercel, Netlify | A preview per change |
+| Infrastructure as code | Terraform, Pulumi | Infrastructure as software ([above](#infrastructure-as-software)) |
+| Kubernetes fleet management | Rancher, Spectro Cloud | **The operator**: clusters as resources, always reconciled |
+| Tunnels | ngrok, Cloudflare Tunnel | **zetta-tunnel** |
+| Private networking and a service mesh | Tailscale, Istio, Linkerd | zetta-tunnel's mutual-TLS mesh |
+| Ingress | ingress-nginx, cloud load balancers | zetta-tunnel's ingress |
+| Observability | Datadog, New Relic, Grafana Cloud | Metrics, logs and dashboards in the platform |
+| Status pages | Atlassian Statuspage, Better Stack | A status page as a resource |
+| Object storage | S3, GCS, Azure Blob | lake's bucket stores |
 
 ### Identity, security and files
 
-| Instead of | You have |
-|---|---|
-| Workforce identity and single sign-on | lake identity: single sign-on, provisioning, multi-factor and passkeys |
-| Authentication for the apps you build | lake's application authentication |
-| A secrets manager and key service | lake secrets, sealed in each workspace |
-| A private certificate authority | lake's certificate authority |
-| File storage and sharing | lake drive, synced by liquid |
+| Replaces | Such as | With |
+|---|---|---|
+| Workforce identity and single sign-on | Okta, Microsoft Entra ID | lake identity: single sign-on, provisioning, multi-factor and passkeys |
+| Authentication for the apps you build | Auth0, Clerk, Cognito, Firebase Auth | lake's application authentication |
+| Secrets and keys | HashiCorp Vault, AWS KMS, Doppler | lake secrets, sealed in each workspace |
+| A private certificate authority | Venafi, Smallstep, AWS Private CA | lake's certificate authority |
+| File storage and sharing | Dropbox, Google Drive, Box | lake drive, synced by liquid |
 
 **What it does not replace:** the hardware or cloud you run it on, payments, team chat, documents and
 wikis, a content delivery network, business-intelligence dashboards, notebooks and a vector database.
+
+The names above belong to their owners and are used only to say what each part stands in for.
 
 ## How it fits together
 

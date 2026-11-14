@@ -225,7 +225,9 @@ zetta, not by a readiness endpoint alone.
 
 - Plain words, short sentences, sentence case. No exclamation marks.
 - Say what a thing does. Leave out how big, how hard or how long the work is.
-- No vendor or competitor is named. Compare by category: "a hosted warehouse", "a code host".
+- Compare by category ("a hosted warehouse", "a code host"). The one place other products are named
+  is the README's *What it replaces* section, which says what each part stands in for. Name them
+  there plainly, as examples of a category, and say nothing about them beyond that.
 - Claim only what is implemented. What is partial is said with its limit. What is missing is listed
   as missing.
 - Commit messages and pull requests describe the change and nothing else: no tool or assistant
