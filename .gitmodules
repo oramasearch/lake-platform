@@ -1,0 +1,100 @@
+[submodule "modules/lake"]
+	path = modules/lake
+	url = https://github.com/oramasearch/lake.git
+	branch = main
+[submodule "modules/zetta"]
+	path = modules/zetta
+	url = https://github.com/oramasearch/zetta.git
+	branch = main
+[submodule "modules/liquid"]
+	path = modules/liquid
+	url = https://github.com/oramasearch/liquid.git
+	branch = main
+[submodule "modules/orama-operator"]
+	path = modules/orama-operator
+	url = https://github.com/oramasearch/orama-operator.git
+	branch = main
+[submodule "modules/zetta-tunnel"]
+	path = modules/zetta-tunnel
+	url = https://github.com/oramasearch/zetta-tunnel.git
+	branch = main
+[submodule "modules/liquify"]
+	path = modules/liquify
+	url = https://github.com/oramasearch/liquify.git
+	branch = main
+[submodule "modules/lake-sqlite"]
+	path = modules/lake-sqlite
+	url = https://github.com/oramasearch/lake-sqlite.git
+	branch = main
+[submodule "modules/lake-duckdb"]
+	path = modules/lake-duckdb
+	url = https://github.com/oramasearch/lake-duckdb.git
+	branch = main
+[submodule "modules/lake-polars"]
+	path = modules/lake-polars
+	url = https://github.com/oramasearch/lake-polars.git
+	branch = main
+[submodule "modules/lake-builder"]
+	path = modules/lake-builder
+	url = https://github.com/oramasearch/lake-builder.git
+	branch = main
+[submodule "modules/app-runtime"]
+	path = modules/app-runtime
+	url = https://github.com/oramasearch/app-runtime.git
+	branch = main
+[submodule "modules/methodology-runtime"]
+	path = modules/methodology-runtime
+	url = https://github.com/oramasearch/methodology-runtime.git
+	branch = main
+[submodule "modules/k0s"]
+	path = modules/k0s
+	url = https://github.com/oramasearch/k0s.git
+	branch = liquid
+[submodule "modules/agent-runtime"]
+	path = modules/agent-runtime
+	url = https://github.com/oramasearch/agent-runtime.git
+	branch = main
+[submodule "modules/agent-creator"]
+	path = modules/agent-creator
+	url = https://github.com/oramasearch/agent-creator.git
+	branch = main
+[submodule "modules/agent-application"]
+	path = modules/agent-application
+	url = https://github.com/oramasearch/agent-application.git
+	branch = main
+[submodule "modules/agent-ask-orama"]
+	path = modules/agent-ask-orama
+	url = https://github.com/oramasearch/agent-ask-orama.git
+	branch = main
+[submodule "modules/agent-project"]
+	path = modules/agent-project
+	url = https://github.com/oramasearch/agent-project.git
+	branch = main
+[submodule "modules/agent-autosuggest"]
+	path = modules/agent-autosuggest
+	url = https://github.com/oramasearch/agent-autosuggest.git
+	branch = main
+[submodule "modules/agent-experiments"]
+	path = modules/agent-experiments
+	url = https://github.com/oramasearch/agent-experiments.git
+	branch = main
+[submodule "modules/agent-eval-generator"]
+	path = modules/agent-eval-generator
+	url = https://github.com/oramasearch/agent-eval-generator.git
+	branch = main
+[submodule "modules/agent-project-corpus"]
+	path = modules/agent-project-corpus
+	url = https://github.com/oramasearch/agent-project-corpus.git
+	branch = main
+[submodule "modules/agent-autosuggest-corpus"]
+	path = modules/agent-autosuggest-corpus
+	url = https://github.com/oramasearch/agent-autosuggest-corpus.git
+	branch = main
+[submodule "modules/base-agent-0.6b"]
+	path = modules/base-agent-0.6b
+	url = https://github.com/oramasearch/base-agent-0.6b.git
+	branch = main
+[submodule "modules/model-runtime"]
+	path = modules/model-runtime
+	url = https://github.com/oramasearch/model-runtime.git
+	branch = main
