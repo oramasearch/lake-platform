@@ -1,0 +1,216 @@
+# Orama Lake Platform
+
+**Orama Lake is the sovereign AI stack**: an AI platform that is an AI easy button with batteries
+included. Everything you need to design, train, and ship real AI that learned on your own data, on
+your own hardware. You use AI to create and ship AI.
+
+This repository is the **entry point**. It holds no product source. It pulls the platform together
+as git submodules, pinned at versions that work together, and it is where the installers, the release
+manifest and the cross-component guides live. Read [`README.md`](README.md) for the map a user sees.
+
+## This repository is written to be public
+
+Treat every file here as if a stranger will read it. That includes this one.
+
+- **Never write here:** customer or prospect names, people's names or addresses, quoted internal
+  decisions, cluster, host, account or Secret names, credentials of any kind, links to private issues,
+  pricing or strategy.
+- **Do write here:** what the platform is, how the parts fit, how to get it, build it, install it and
+  contribute to it.
+- If a change needs something from the "never" list to make sense, it belongs in a private workspace,
+  not here.
+- **Publishing is a separate, deliberate step.** Do not change the visibility of this repository, of
+  anything it pins, or of any image, package or model, and do not announce anything. That happens only
+  on the maintainers' explicit word.
+
+## The layout
+
+```
+lake-platform/
+├── README.md                 the front door
+├── CLAUDE.md                 this file
+└── modules/
+    ├── liquid-bridge/        liquid, lake and what runs beside them
+    │   └── modules/
+    │       ├── lake                  the workspace: where people work
+    │       ├── liquid                source control, builds, packages, deploys
+    │       ├── liquify               the IDE
+    │       ├── lake-sqlite, lake-duckdb, lake-polars     lake's data sidecars
+    │       ├── lake-builder          builds the images lake deploys
+    │       ├── app-runtime           what the apps people build run on
+    │       ├── methodology-runtime   what machine-learning methodologies run on
+    │       └── k0s                   the small Kubernetes distribution (a fork)
+    ├── zetta-bridge/         zetta, the tunnel, the agents and the models
+    │   └── modules/
+    │       ├── zetta                 the engine
+    │       ├── zetta-tunnel          tunnels, mesh, ingress
+    │       ├── agent-runtime         what every agent runs on
+    │       ├── agent-creator, agent-application, agent-ask-orama,
+    │       │   agent-project, agent-autosuggest, agent-eval-generator
+    │       ├── agent-project-corpus, agent-autosuggest-corpus
+    │       └── base-agent-0.6b       the base model
+    ├── orama-operator/       runs all of it on Kubernetes
+    ├── agent-experiments/    an agent no bridge groups yet
+    └── model-runtime/        training and inference for the models
+```
+
+A bridge groups one part of the platform and pins its components. This repository pins the bridges.
+**Before working inside a bridge or a component, read its own `CLAUDE.md` or `AGENTS.md`.** It knows
+its build, its tests and its rules; this file only knows how the parts relate.
+
+## How the parts fit
+
+```
+          people, scripts, agents
+                    │  REST · OpenAPI · MCP   (one API, three ways to reach it)
+                    ▼
+   ┌──────────────────────────────────────────┐
+   │ lake: workspaces, agents, apps, drive,   │
+   │ sign-in, secrets, registry, search       │
+   └──────┬────────────────────────┬──────────┘
+          │ links libliquid        │ one zetta per workspace
+          ▼                        ▼
+   ┌─────────────┐          ┌─────────────┐
+   │ liquid      │          │ zetta       │
+   └─────────────┘          └─────────────┘
+       the operator runs all of it on a cluster
+```
+
+- **lake** is what a person opens. Every capability is defined once and served as REST, OpenAPI and
+  MCP, so a person, a script and an agent use the same thing. Its web app calls only that API.
+- **zetta** is the engine: a cluster of equal peers with no leader, in C++26. Data, SQL, full-text
+  search, and machine learning with explanations. **Each workspace has its own zetta.**
+- **liquid** is differential source control, builds, packages and deploys in one program. lake links
+  it as a library for repositories and builds.
+- **orama-operator** reconciles the platform on Kubernetes from resources you declare.
+- **zetta-tunnel** carries tunnels, the mutual-TLS mesh and ingress.
+- **The agents** run on agent-runtime and reach the platform only through lake's API, with the access
+  they are granted. **The models** they run on are trained and served by model-runtime.
+
+### Rules of the design that every change respects
+
+1. **A workspace's data lives in that workspace's zetta**: data, features, credentials, metrics, logs
+   and history. lake's own database holds only multitenancy and dispatch (accounts, workspaces,
+   memberships, grants, which zetta serves which workspace) and billing records.
+2. **The operator talks to lake's control plane, never to a workspace zetta.**
+3. **An app or an agent has only the access its binding grants.** A new capability gets the same
+   check as the existing ones. Access is never widened to make one case work.
+4. **One operator, the same on every cluster.** No flag, value or build turns a controller, a kind or
+   a permission on for one cluster and off for another.
+5. **Clusters change through the operator**, or through a resource it reconciles, never by hand.
+6. **A user's secrets** live sealed in their workspace. A Kubernetes Secret is only a projection of
+   one, written when a workload has to mount it.
+
+### Words that have one meaning
+
+| Word | Means |
+|---|---|
+| **workspace** | One team's place in lake, with its own zetta |
+| **drip** | One captured, signed write in liquid |
+| **cut** | Naming a piece of work in liquid, which turns its drips into a change |
+| **app** | Something a person builds and deploys in a workspace |
+| **agent** | A definition that runs on agent-runtime |
+| **binding** | What gives an app or agent its access to a workspace |
+| **bridge** | A repository that pins other repositories and holds no product source |
+
+Do not use "seam". Say which thing you mean: an **interface**, an **extension point**, an **injected
+dependency**, or a **boundary**.
+
+## Working here
+
+### Get the source
+
+```sh
+git clone --recurse-submodules https://github.com/oramasearch/lake-platform.git
+```
+
+One part only:
+
+```sh
+git submodule update --init modules/liquid-bridge
+git -C modules/liquid-bridge submodule update --init modules/lake
+```
+
+Some components are large. Initialize what the task needs, not everything.
+
+### Build and test a component
+
+Each component builds on its own, from its own directory. Its README has the exact commands; these
+are the shapes.
+
+| Component | Language | Build and test |
+|---|---|---|
+| lake, zetta, liquid, zetta-tunnel, liquify | C++26, CMake, Ninja | `cmake -S . -B build -G Ninja && cmake --build build && ctest --test-dir build --output-on-failure` |
+| orama-operator, lake-sqlite, lake-duckdb | Go | `go test ./...` |
+| lake-polars | Rust | `cargo test` |
+| The agents, agent-runtime, app-runtime, lake-builder | Python, uv | `uv sync && uv run pytest` |
+
+- **Proof is local.** Run the component's own build and its full test suite, and report the counts,
+  what was skipped and what was not run. There is no hosted CI to wait for or to cite.
+- **A crash in a C or C++ component means an AddressSanitizer run**, even if it does not come back on
+  a rerun. Build in its own directory with `-fsanitize=address -fno-omit-frame-pointer` and run the
+  suite under it. Never call a segfault a flake.
+- **A test that needs a live zetta has to run against one.** A suite that skips those tests does not
+  prove the change reaches zetta.
+
+### Change a component
+
+The change is made **in the component's own repository**, never here.
+
+1. Branch from that repository's `dev`.
+2. Open the pull request against `dev`, written out: `--base dev`. `main` is the last release and
+   moves only when a release is cut.
+3. The pull request opens with three labelled lines a newcomer can follow: **What**, **Why**, **How**.
+4. Merge with a merge commit. Never squash, never rebase-merge.
+5. Close the issue with a comment saying what changed, with the pull request's URL and the proof.
+   Never use `fixes #N` or `closes #N`.
+
+### Move a pin
+
+A pin moves after the component's change has landed, bottom-up, each step pushed before the next:
+
+1. The component's commit is on its remote.
+2. In the bridge: `git add modules/<component>`, commit, push.
+3. Here: `git add modules/<bridge>`, commit, push.
+
+Never pin a commit that is not pushed: the next clone breaks. Never move a pin backwards to match an
+old checkout; update the checkout instead (`git submodule update`). A commit in this repository is
+one set of versions that work with each other, so move pins that depend on each other together.
+
+### When a version moves
+
+When a component's version changes, or a pin of zetta, liquid or a networking library moves, list what
+the new code reads from its environment and what it now refuses by default: a new variable, an
+allowlist, a secret, a schema. Each one is rendered by the operator, in an operator release that
+rolls **before** the image that needs it. Health is proven by a real call through to a workspace's
+zetta, not by a readiness endpoint alone.
+
+### Change this repository
+
+- This repository has no `dev` branch. A change here lands on `main`.
+- Commit, then push. A commit that stays local is invisible to everyone and breaks pins.
+- When you touch a folder, update its `README.md` in the same change. A new module or a new top-level
+  folder also updates the root `README.md` and the layout above.
+- Documents are Markdown files in the repository that owns the subject. A document that spans
+  components goes here, under `docs/`.
+
+## Writing
+
+- Plain words, short sentences, sentence case. No exclamation marks.
+- Say what a thing does. Leave out how big, how hard or how long the work is.
+- No vendor or competitor is named. Compare by category: "a hosted warehouse", "a code host".
+- Claim only what is implemented. What is partial is said with its limit. What is missing is listed
+  as missing.
+- Commit messages and pull requests describe the change and nothing else: no tool or assistant
+  credits, no co-author trailers for one.
+
+## What is not here
+
+- **Install paths and the release manifest** are being built. Until they exist, a component is built
+  from its own repository.
+- **The C++ libraries the engine vendors** (the CRDT library, the full-text search library, the
+  networking libraries) are submodules of the components that use them. Change them in their own
+  repositories.
+- **Private workspaces.** The bridges were written as working repositories and still hold working
+  notes. Do not copy anything from a bridge's `docs/` into this repository without checking it
+  against *This repository is written to be public* above.
