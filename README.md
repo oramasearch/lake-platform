@@ -5,9 +5,7 @@
   <img src="docs/assets/lockup-light.svg" alt="Orama Lake: the sovereign AI stack" width="450">
 </picture>
 
-# Orama Lake - Own your AI
-
-### The sovereign AI stack
+### Own your AI
 
 **An AI easy button, with batteries included.**
 
