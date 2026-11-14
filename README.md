@@ -9,7 +9,7 @@
 Everything you need to design, train, and ship real AI that learned on your own data,<br>
 on your own hardware, in minutes instead of months.
 
-[Why](#why-orama-lake) · [What you get](#what-you-get) · [Batteries included](#batteries-included) · [How it fits](#how-it-fits-together) · [Get the source](#get-the-source) · [The components](#the-components)
+[Why](#why-orama-lake) · [What you get](#what-you-get) · [AI Projects](#ai-projects) · [Infrastructure as software](#infrastructure-as-software) · [Batteries included](#batteries-included) · [How it fits](#how-it-fits-together) · [Get the source](#get-the-source) · [The components](#the-components)
 
 </div>
 
@@ -135,7 +135,65 @@ secrets and keys.
 
 </td>
 </tr>
+<tr>
+<td valign="top">
+
+### AI Projects: one ensemble
+
+A project holds many models, workflows, agents, databases, storage and apps, all working together
+for one purpose.
+
+</td>
+<td valign="top">
+
+### Infrastructure as software
+
+Spin up any infrastructure on the fly: clusters, DNS, buckets. It is always reconciling, and you can
+change it while it runs.
+
+</td>
+</tr>
 </table>
+
+## AI Projects
+
+Real AI is rarely one model. It is a set of parts that have to work together, and an **AI Project**
+is where they live.
+
+A project holds:
+
+| | |
+|---|---|
+| **Models** | As many as the problem needs, of any kind |
+| **Workflows** | Execution graphs that run the steps in order |
+| **Agents** | Working alone, in teams or as swarms |
+| **Databases** | The data the project reads and writes |
+| **Storage** | Files and objects |
+| **Apps** | What people actually open and use |
+
+All of them work together as one ensemble, for one concerted purpose: a use case, or a whole project.
+You design it in one place, and you ship it as one thing.
+
+## Infrastructure as software
+
+Orama Lake spins up any infrastructure on the fly: Kubernetes clusters, DNS records, object-storage
+buckets, and whatever else a project needs. We call it **infrastructure as software**.
+
+| | Infrastructure as code | Infrastructure as software |
+|---|---|---|
+| **When it reconciles** | When someone runs it, or when an event fires | Always, at runtime |
+| **Changing it** | Edit, plan, apply | Mutable at runtime |
+| **What it is** | Files that describe a desired state | A running program that keeps the state true |
+
+What that gives you:
+
+- **Hyperconverged infrastructure, at far lower cost.** Compute, data, storage and networking run
+  together on the same clusters, so you run fewer machines and fewer services.
+- **Better security isolation.** Workloads run on dedicated Kubernetes *leaf* clusters, controlled by
+  a single management cluster.
+- **Easy to set up.** The management cluster installs from a single helmfile.
+- **100% covered by MCP and the API.** Everything the platform can do to infrastructure, a person, a
+  script or an agent can do through MCP or the API, which makes it easy to operate.
 
 ## Batteries included
 
@@ -143,12 +201,13 @@ The services a team would otherwise go and get one at a time are already in the 
 
 | | In the box |
 |---|---|
-| **Build AI** | Agents and apps built from a description · experiment tracking, from the first trial to the model in the registry · a streaming agent substrate, so agents react as events arrive and work together |
+| **Design AI** | AI Projects that hold models, workflows, agents, databases, storage and apps as one ensemble · agents and apps built from a description · experiment tracking, from the first trial to the model in the registry · a streaming agent substrate, so agents react as events arrive and work together |
 | **Train AI** | Distributed gradient-boosted trees · exact explanations of every prediction · calibration · AutoML studies · a model registry · import of models in common open formats · synthetic data with differential privacy |
 | **Ship AI** | Differential source control, builds and deploys · image builds, a container registry and artifact storage · workflow pipelines, and agents on a schedule or from a stream |
 | **Your data** | An engine for storing and querying it · full-text search over data and documents · file storage and sharing, synced to a folder on your machine |
+| **Infrastructure** | Kubernetes clusters, DNS and buckets spun up on the fly · always reconciling, mutable at runtime · dedicated leaf clusters under one management cluster, installed from a single helmfile |
 | **Trust** | Signed provenance and an SBOM for every build · a transparency log and signed update metadata · secret scanning that blocks a leaked key before it lands |
-| **Connect** | MCP for every capability, and an MCP client with sign-in and approval for each tool · tunnels and a private network mesh with mutual TLS |
+| **Connect** | MCP and the API cover 100% of the platform · MCP for every capability, and an MCP client with sign-in and approval for each tool · tunnels and a private network mesh with mutual TLS |
 | **Identity** | Sign-in for the apps you build · secrets and keys · a private certificate authority |
 
 ## How it fits together
@@ -180,7 +239,7 @@ The services a team would otherwise go and get one at a time are already in the 
 | **lake** | Where you work. The workspace where you build, train and ship AI on your own data. Everything it can do is one API, served as REST, OpenAPI and MCP, so a person, a script and an agent all use the same thing. |
 | **zetta** | The engine underneath, in C++26. A cluster of equal peers with no leader. It stores and queries your data, searches it, trains machine-learning models on it, and explains every prediction they make. |
 | **liquid** | Differential source control, builds, packages and deploys in one program. Every write is captured and signed, and only what changed is ever rebuilt or redeployed. It imports from Git and exports back to it. |
-| **The operator** | Runs all of it on your own Kubernetes clusters. You describe what you want, and it makes the cluster match. |
+| **The operator** | Infrastructure as software. It runs all of it on your own Kubernetes clusters, creates the clusters, DNS and buckets a project needs, and keeps reconciling them while they run. |
 | **Agents and models** | The agent that builds agents, the one that builds apps, the one you ask questions, and the models they run on. |
 
 ## Ways to run it
