@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 120" width="450" height="120" role="img" aria-labelledby="t">
+<title id="t">Orama Lake: the sovereign AI stack</title>
+<defs>
+<linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2dd4bf"/><stop offset="0.5" stop-color="#58a6ff"/><stop offset="1" stop-color="#a78bfa"/></linearGradient>
+<clipPath id="c"><circle cx="60" cy="60" r="30"/></clipPath>
+</defs>
+<circle cx="60" cy="60" r="44" fill="none" stroke="url(#g)" stroke-width="12"/>
+<g clip-path="url(#c)" fill="url(#g)"><path d="M20 64q10 -9 20 0t20 0t20 0t20 0V110H20Z"/></g>
+<circle cx="71" cy="45" r="6.5" fill="url(#g)"/>
+<text x="144" y="68" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="50" font-weight="700" letter-spacing="-1.4" fill="#e6edf3">Orama <tspan fill="url(#g)">Lake</tspan></text>
+<text x="146" y="98" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="15.5" font-weight="600" letter-spacing="3.1" fill="#9198a1">THE SOVEREIGN AI STACK</text>
+</svg>

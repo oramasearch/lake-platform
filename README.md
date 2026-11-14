@@ -1,8 +1,8 @@
 <div align="center">
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/logo-dark.svg">
-  <img src="docs/assets/logo-light.svg" alt="Orama Lake" width="128" height="128">
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/lockup-dark.svg">
+  <img src="docs/assets/lockup-light.svg" alt="Orama Lake: the sovereign AI stack" width="450">
 </picture>
 
 # Orama Lake - Own your AI
