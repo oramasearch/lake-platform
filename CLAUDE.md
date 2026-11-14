@@ -29,6 +29,9 @@ Treat every file here as if a stranger will read it. That includes this one.
 lake-platform/
 ├── README.md                 the front door
 ├── CLAUDE.md                 this file
+├── docs/
+│   ├── install/              how to install: the helmfile, or k0s on a fresh machine
+│   └── assets/               the logo and the architecture graphic, with their generators
 └── modules/
     ├── liquid-bridge/        liquid, lake and what runs beside them
     │   └── modules/
@@ -206,8 +209,10 @@ zetta, not by a readiness endpoint alone.
 
 ## What is not here
 
-- **Install paths and the release manifest** are being built. Until they exist, a component is built
-  from its own repository.
+- **The detail of an install.** [`docs/install/`](docs/install/README.md) is the short form. The
+  full procedures are the operator's, under `modules/orama-operator/docs/install*`; change them there.
+- **A release manifest and packaged installers.** The versions that work together are this
+  repository's pins.
 - **The C++ libraries the engine vendors** (the CRDT library, the full-text search library, the
   networking libraries) are submodules of the components that use them. Change them in their own
   repositories.

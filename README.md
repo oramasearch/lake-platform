@@ -1,5 +1,10 @@
 <div align="center">
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/logo-dark.svg">
+  <img src="docs/assets/logo-light.svg" alt="Orama Lake" width="128" height="128">
+</picture>
+
 # Orama Lake - Own your AI
 
 ### The sovereign AI stack
@@ -9,7 +14,7 @@
 Everything you need to design, train, and ship real AI that learned on your own data,<br>
 on your own hardware, in minutes instead of months.
 
-[Why](#why-orama-lake) · [What you get](#what-you-get) · [AI Projects](#ai-projects) · [Infrastructure as software](#infrastructure-as-software) · [Batteries included](#batteries-included) · [How it fits](#how-it-fits-together) · [Get the source](#get-the-source) · [The components](#the-components)
+[**Install**](docs/install/README.md) · [Why](#why-orama-lake) · [What you get](#what-you-get) · [AI Projects](#ai-projects) · [Infrastructure as software](#infrastructure-as-software) · [Batteries included](#batteries-included) · [How it fits](#how-it-fits-together) · [Get the source](#get-the-source) · [The components](#the-components)
 
 </div>
 
@@ -23,6 +28,16 @@ model, on-prem or in any cloud, air-gapped if you need it, from supercomputers t
 with AI costs you control and any component yours to swap.
 
 It's the same code that runs [lake.live](https://lake.live), and it's yours to build on.
+
+## Install
+
+| You have | Do this |
+|---|---|
+| **A Kubernetes cluster** | [Install with the helmfile](docs/install/README.md#on-a-kubernetes-cluster-you-already-have): the platform charts and the operator, in one command |
+| **A fresh Linux machine** | [Install with k0s](docs/install/README.md#on-a-fresh-linux-machine): Kubernetes, the charts and the operator, from one script |
+
+Then [apply one `Lake`](docs/install/README.md#apply-one-lake), and the operator keeps it running.
+The whole guide is [`docs/install/`](docs/install/README.md).
 
 ## Why Orama Lake
 
@@ -181,7 +196,7 @@ You design it in one place, and you ship it as one thing.
 ## Infrastructure as software
 
 Orama Lake spins up any infrastructure on the fly: Kubernetes clusters, DNS records, object-storage
-buckets, and whatever else a project needs. We call it **infrastructure as software**.
+buckets, and whatever else a project needs. Kris Nóva called it **infrastructure as software**.
 
 | | Infrastructure as code | Infrastructure as software |
 |---|---|---|
@@ -234,9 +249,9 @@ The services a team would otherwise go and get one at a time are already in the 
 | | |
 |---|---|
 | **Try it** | On a laptop |
-| **Run it** | On one machine or a small cluster, with k0s and the operator |
-| **Scale it** | On any Kubernetes cluster, with the operator's Helm chart |
-| **Air-gapped** | From one signed bundle, with nothing fetched from outside |
+| **Run it** | On one machine or a small cluster, [with k0s and the operator](docs/install/README.md#on-a-fresh-linux-machine) |
+| **Scale it** | On any Kubernetes cluster, [with the helmfile](docs/install/README.md#on-a-kubernetes-cluster-you-already-have) |
+| **Air-gapped** | From one bundle, with nothing fetched from outside ([the air-gapped variant](modules/orama-operator/docs/install/k0s.md#air-gapped-variant)) |
 
 ## Get the source
 
