@@ -1,14 +1,14 @@
 # Install Orama Lake
 
-Two ways to install, and they end in the same place: a Kubernetes cluster running the operator, and
-one `Lake` that the operator keeps running.
+Two ways to install the first cluster, and they end in the same place: a management cluster running
+the operator. From there you declare your Lakes in a `LakeSet`, and the operator runs them.
 
 | You have | Use | What it installs |
 |---|---|---|
 | A Kubernetes cluster | [The helmfile](#on-a-kubernetes-cluster-you-already-have) | The platform charts and the operator, in one command |
 | A fresh Linux machine | [k0s and the helmfile's charts](#on-a-fresh-linux-machine) | Kubernetes itself, then the same charts and the operator, from one script |
 
-Both are followed by the same last step: [apply one `Lake`](#apply-one-lake).
+Both are followed by the same last step: [declare a `LakeSet`](#run-a-lake-declare-a-lakeset).
 
 This page is the short form. The full procedures, with every check and every failure to look for,
 are in the operator's own documents:
@@ -79,10 +79,10 @@ Check it:
 
 ```sh
 kubectl -n orama-system rollout status deployment/orama-operator --timeout=10m
-kubectl get crd lakes.orama.cloud
+kubectl get crd lakesets.orama.cloud
 ```
 
-Then [apply one `Lake`](#apply-one-lake).
+Then [declare a `LakeSet`](#run-a-lake-declare-a-lakeset).
 
 ## On a fresh Linux machine
 
@@ -100,78 +100,127 @@ sudo OPERATOR_CHART="$OLDPWD/modules/orama-operator/chart" hack/lake-on-k0s/inst
 ```
 
 The script builds and installs k0s, waits for the node and every component of the distribution,
-installs the Postgres operator, the certificate manager and the operator's chart, applies one `Lake`
-and prints the address it answers on. `hack/lake-on-k0s/teardown.sh` removes it.
+installs the Postgres operator, the certificate manager and the operator's chart, and proves the
+machine with one test Lake, printing the address it answers on. `hack/lake-on-k0s/teardown.sh`
+removes it. The Lakes you run are declared in a [`LakeSet`](#run-a-lake-declare-a-lakeset).
 
 To run each step yourself, or to install with no network access at all, follow
 [`install/k0s.md`](../../modules/orama-operator/docs/install/k0s.md). The air-gapped variant
 prepares one image bundle on a connected machine and installs from it with nothing fetched from
 outside.
 
-## Apply one Lake
+## Run a Lake: declare a LakeSet
 
-A `Lake` is one resource. From it the operator creates the lake service, its control database, its
-store, and the engine each workspace gets.
+You never write a `Lake` yourself. You declare a **`LakeSet`** on the management cluster: one
+template, and a list of members. Each member is one Lake on one cluster, in its own namespace. The
+management cluster's operator applies every member to its cluster, and that cluster's own operator
+runs it. Versions, settings and secrets are managed in one place, for one Lake or for many.
+
+It takes three resources, applied to the management cluster in this order.
+
+### 1. A cluster
+
+A `KubernetesCluster` says what cluster you want. The operator creates it and keeps it as declared.
+It names a `KubernetesClusterProvider`, written once per cloud account.
 
 ```yaml
 apiVersion: orama.cloud/v1alpha1
-kind: Lake
+kind: KubernetesCluster
 metadata:
-  name: hello
+  name: lake-cluster-01
 spec:
-  namespace: lake
-  image: oramasearch/lake:<lake-version>
-  replicas: 1
-  store:
-    size: 100Gi
-    accessModes:
-      - ReadWriteOnce
-  postgres:
-    instances: 1
-    storageSize: 50Gi
+  providerRef: my-cloud-account
+  region: westus2
+  kubernetesVersion: "1.35"
+  deletionPolicy: Retain
+  nodePools:
+    - {name: system, role: system, machineSize: Standard_D8as_v7, minCount: 1, maxCount: 5}
+  tags:
+    purpose: production
 ```
 
-Save it as `lake.yaml`, then apply it. The operator creates the namespace:
+Every member of one set runs on clusters with the same `purpose` tag, so a set never mixes
+production with anything else.
+
+The provider type available today is `aks`. A set's member names a `KubernetesCluster`, so a set
+cannot yet place a Lake on a cluster the operator did not create, the management cluster included.
+
+### 2. The platform and the operator on it
+
+A `ClusterHelmRelease` per platform chart, and one `OramaOperator`. They install on the new cluster
+exactly what the helmfile installed on the management cluster: the same charts, the same versions,
+the same operator.
+
+```yaml
+apiVersion: orama.cloud/v1alpha1
+kind: OramaOperator
+metadata:
+  name: lake-cluster-01
+spec:
+  clusterRef: lake-cluster-01
+  version: <operator-version>
+```
+
+The charts are listed in the operator's
+[sample](../../modules/orama-operator/config/samples/leaf-nonprod-operator.yaml).
+
+### 3. The set
+
+```yaml
+apiVersion: orama.cloud/v1alpha1
+kind: LakeSet
+metadata:
+  name: lake-prod
+spec:
+  template:                    # a Lake's settings, the default for every member
+    image: oramasearch/lake:<lake-version>
+    ingressEnabled: true
+    postgres: {instances: 1, storageSize: 50Gi}
+    store: {size: 100Gi, accessModes: [ReadWriteOnce]}
+  clusters:                    # the members, independent of each other
+    - clusterRef: lake-cluster-01
+      name: main
+      spec:
+        host: lake.example.com
+    - clusterRef: lake-cluster-01
+      name: team-a             # a dedicated Lake, with its own settings
+      spec:
+        host: team-a.lake.example.com
+        postgres: {instances: 3}
+```
+
+Apply it and watch it:
 
 ```sh
-kubectl apply -f lake.yaml
-kubectl wait lake/hello --for=condition=Ready --timeout=15m
-kubectl get lake hello
+kubectl apply -f lakeset.yaml
+kubectl get lakeset lake-prod
 ```
 
-Ready means the row reports `READY=1`, `DB=1/1`, `SCHEMA=Applied` and `PHASE=Ready`. To reach it
-from your machine:
+The set reports how many members are ready, the version each one runs, and each member's own reason
+when it is not ready.
 
-```sh
-kubectl -n lake port-forward service/lake-hello 4900:80
-curl -fsS http://127.0.0.1:4900/readyz
-```
+What a set gives you:
 
-What to change for a real installation:
-
-| For | Set |
+| To | Do this |
 |---|---|
-| More than one replica | `replicas`, and a store with `ReadWriteMany` on replicated storage |
-| A public address | `ingressEnabled: true` and `host`, with a TLS Secret in the namespace |
-| A registry that needs a credential | `pullSecretName` |
-| No outside connections at all | `env` with `LAKE_LOG_MODE: air-gapped`, and no `host` |
-| Backups of the control database | `postgres.backup` |
+| Add a Lake | Add a member |
+| Upgrade every Lake | Change `template.image` |
+| Hold one Lake at a version | Set `image` in that member's `spec` |
+| Change one Lake's settings | Set them in that member's `spec`; it is merged over the template |
+| Give Lakes their credentials | List the Secrets under `secrets`; the set copies them into each member's namespace |
+| Run a Lake in another region | Add a cluster there, and a member on it |
 
 Every field is in the operator's
-[resource reference](../../modules/orama-operator/docs/crd-reference.md).
-
-## After the first cluster
-
-The cluster you just installed can manage others. Declare a cluster as a resource and the operator
-creates it, installs the same charts and the same operator on it, and keeps them reconciled. That is
-how one management cluster runs many dedicated leaf clusters
-([the operator's infrastructure guide](../../modules/orama-operator/docs/infrastructure/README.md)).
+[resource reference](../../modules/orama-operator/docs/crd-reference.md), and the procedures are in
+its [operations guide](../../modules/orama-operator/docs/infrastructure/operations.md) and
+[infrastructure guide](../../modules/orama-operator/docs/infrastructure/README.md).
 
 ## Remove it
 
+Removing a member from a set, or deleting the set, leaves its Lakes running unless the set says
+`deletionPolicy: Delete`. A Lake's volumes are kept when it is deleted; review them before deleting
+a claim. A `KubernetesCluster` is destroyed or kept according to its own `deletionPolicy`.
+
 ```sh
-kubectl delete lake hello
 helm uninstall orama-operator -n orama-system
 ```
-
-The Lake's volumes are kept when the `Lake` is deleted. Review them before deleting a claim.

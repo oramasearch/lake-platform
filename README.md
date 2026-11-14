@@ -34,7 +34,8 @@ It's the same code that runs [lake.live](https://lake.live), and it's yours to b
 | **A Kubernetes cluster** | [Install with the helmfile](docs/install/README.md#on-a-kubernetes-cluster-you-already-have): the platform charts and the operator, in one command |
 | **A fresh Linux machine** | [Install with k0s](docs/install/README.md#on-a-fresh-linux-machine): Kubernetes, the charts and the operator, from one script |
 
-Then [apply one `Lake`](docs/install/README.md#apply-one-lake), and the operator keeps it running.
+Then [declare a `LakeSet`](docs/install/README.md#run-a-lake-declare-a-lakeset): one template and a
+list of Lakes, which the operator creates, upgrades and keeps running.
 The whole guide is [`docs/install/`](docs/install/README.md).
 
 ## Why Orama Lake
