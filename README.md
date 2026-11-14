@@ -32,7 +32,7 @@ It's the same code that runs [lake.live](https://lake.live), and it's yours to b
 | | |
 |---|---|
 | [**One cluster**](docs/install/README.md#one-cluster) | Everything on a single cluster. On a cluster you already have, it is the helmfile and one resource. On a fresh Linux machine, it is one script. |
-| [**Management cluster**](docs/install/README.md#management-cluster) | One cluster that creates and runs the others. You declare clusters and a `LakeSet`, and the operator keeps your Lakes running on dedicated clusters. |
+| [**Management cluster**](docs/install/README.md#management-cluster) | One cluster that creates, runs, and manages other "leaf" Kubernetes clusters and their deployments (eg. multi-region, federated clusters/deployments, and globally-redundant deployments). You declare clusters and a `LakeSet`, and the operator keeps your Lakes running. |
 
 The whole guide is [`docs/install/`](docs/install/README.md).
 
