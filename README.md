@@ -12,7 +12,7 @@
 Everything you need to design, train, and ship real AI that learned on your own data,<br>
 on your own hardware, in minutes instead of months.
 
-[**Install**](docs/install/README.md) · [Why](#why-orama-lake) · [What you get](#what-you-get) · [AI Projects](#ai-projects) · [Infrastructure as software](#infrastructure-as-software) · [Batteries included](#batteries-included) · [How it fits](#how-it-fits-together) · [Get the source](#get-the-source) · [The components](#the-components)
+[**Install**](docs/install/README.md) · [Why](#why-orama-lake) · [What you get](#what-you-get) · [AI Projects](#ai-projects) · [Infrastructure as software](#infrastructure-as-software) · [Batteries included](#batteries-included) · [What it replaces](#what-it-replaces) · [How it fits](#how-it-fits-together) · [Get the source](#get-the-source) · [The components](#the-components)
 
 </div>
 
@@ -225,6 +225,92 @@ The services a team would otherwise go and get one at a time are already in the 
 | **Trust** | Signed provenance and an SBOM for every build · a transparency log and signed update metadata · secret scanning that blocks a leaked key before it lands |
 | **Connect** | MCP and the API cover 100% of the platform · MCP for every capability, and an MCP client with sign-in and approval for each tool · tunnels and a private network mesh with mutual TLS |
 | **Identity** | Sign-in for the apps you build · secrets and keys · a private certificate authority |
+
+## What it replaces
+
+A team shipping AI usually buys or assembles each of these separately, then spends its time making
+them work together. Orama Lake puts them in one stack, on your own hardware, under one sign-in and
+one API.
+
+### AI: agents, models and training data
+
+| Instead of | You have |
+|---|---|
+| An agent builder | **agent-creator**: describe the agent and it builds it, and **agent-runtime** runs every agent you create |
+| A chat assistant over your company's data | **Ask Orama**, on every page of lake |
+| An app builder | **agent-application**: builds web and data apps from a description, commits them and deploys them |
+| Consultants to scope what is worth building | **agent-autosuggest**: reads your situation and your data, and proposes what to build |
+| A pipeline and solution engineering team | **agent-project**: builds and operates solutions and pipelines |
+| An AutoML and experiment service | **agent-experiments** and zetta's AutoML studies, with experiment tracking |
+| An evaluation service for language models | **agent-eval-generator**: writes the test cases agents are measured against |
+| Bought or labelled training data | Generated training corpora, and differentially private synthetic data |
+| Hosted model APIs | **base-agent-0.6b**, a base model you run yourself |
+| Rented training and inference | **model-runtime**: train and infer behind one interface, on any accelerator |
+| A fine-tuning service | zetta training, with reinforcement learning from verifiable rewards |
+| A machine-learning platform | zetta and lake: distributed training, explanations, calibration, methodologies, a model registry, model import |
+| Model serving | lake models: prediction behind keys, origins and traffic controls |
+| A model and dataset hub | lake's hub, which the standard hub client talks to |
+| A language-model gateway with metering | lake's model gateway, with token metering |
+| MCP servers and gateways | Every capability of lake and zetta served as MCP, and an MCP client with per-tool approval |
+| A decision platform | zetta's decision-policy engine: versioned policies, approvals, holdouts, a ledger and return on investment |
+
+### Data
+
+| Instead of | You have |
+|---|---|
+| A cloud warehouse or lakehouse | **zetta**: a replicated store, partitioned tables, SQL, distributed dataframes, compute next to the data |
+| A streaming platform and event bus | zetta topics, or Kafka as a lake service |
+| Connectors | lake connections to the databases you already run |
+| Pipelines and orchestration | zetta pipelines, written from intent or in Python, with a correctness gate |
+| Workflow automation | zetta pipelines that import and run workflow definitions, and agents that run on schedules and from streams |
+| Managed databases | lake services: Postgres, TiDB, Cassandra, Valkey, Kafka, ClickHouse and zetta itself |
+| Small hosted SQL | lake-sqlite, lake-duckdb and lake-polars |
+| Full-text search | zetta's ranked search, and lake search indexes |
+| Code search | liquid's code search |
+
+### Developer platform
+
+| Instead of | You have |
+|---|---|
+| Version control and large-file storage | **liquid** |
+| Code hosting and review | lake's repositories |
+| CI/CD | liquid: build, test and verify on every write, deploys and previews from a change |
+| Remote builds and build caches | liquid, which rebuilds only what changed |
+| Image builds | lake builds |
+| Package and container registries | lake's registry: containers, npm, Python and debug symbols |
+| Artifact storage | liquid and lake's store |
+| Packaging for each operating system | liquid's packages for Linux, containers and Windows |
+| Supply-chain signing | Signed provenance, bills of materials and a transparency log, in liquid and lake |
+| Secret scanning | liquid |
+| An IDE | **liquify** |
+
+### Hosting and infrastructure
+
+| Instead of | You have |
+|---|---|
+| An app hosting platform | lake apps, deployed by liquid |
+| Preview environments | A preview per change |
+| Kubernetes fleet management | **The operator**: clusters as resources, always reconciled |
+| Infrastructure as code tooling | Infrastructure as software ([above](#infrastructure-as-software)) |
+| Tunnels | **zetta-tunnel** |
+| Private networking and a service mesh | zetta-tunnel's mutual-TLS mesh |
+| Ingress | zetta-tunnel's ingress |
+| An observability service | Metrics, logs and dashboards in the platform |
+| Status pages | A status page as a resource |
+| Object storage | lake's bucket stores |
+
+### Identity, security and files
+
+| Instead of | You have |
+|---|---|
+| Workforce identity and single sign-on | lake identity: single sign-on, provisioning, multi-factor and passkeys |
+| Authentication for the apps you build | lake's application authentication |
+| A secrets manager and key service | lake secrets, sealed in each workspace |
+| A private certificate authority | lake's certificate authority |
+| File storage and sharing | lake drive, synced by liquid |
+
+**What it does not replace:** the hardware or cloud you run it on, payments, team chat, documents and
+wikis, a content delivery network, business-intelligence dashboards, notebooks and a vector database.
 
 ## How it fits together
 
