@@ -279,6 +279,8 @@ API.
 | Small hosted SQL | MotherDuck, Turso | lake-sqlite, lake-duckdb and lake-polars |
 | Full-text search | Algolia, Elastic | zetta's ranked search, and lake search indexes |
 | Code search | Sourcegraph | liquid's code search |
+| A vector database | Pinecone, Weaviate | Vector search, through OramaCore |
+| BI and dashboards | Tableau, Power BI, Looker | Dashboards as custom apps, which the app builder can build for you |
 
 ### Developer platform
 
@@ -323,7 +325,7 @@ API.
 | File storage and sharing | Dropbox, Google Drive, Box | lake drive, synced by liquid |
 
 **What it does not replace:** the hardware or cloud you run it on, payments, team chat, documents and
-wikis, a content delivery network, business-intelligence dashboards, notebooks and a vector database.
+wikis, a content delivery network and notebooks.
 
 The names above belong to their owners and are used only to say what each part stands in for.
 
