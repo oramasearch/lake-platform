@@ -212,27 +212,10 @@ The services a team would otherwise go and get one at a time are already in the 
 
 ## How it fits together
 
-```
-            people, scripts, agents
-                      │   REST · OpenAPI · MCP
-                      ▼
-   ┌────────────────────────────────────────────┐
-   │  lake                                      │
-   │  workspaces · agents · apps · drive        │
-   │  sign-in · secrets · registry · search     │
-   └───────┬──────────────────────────┬─────────┘
-           │                          │  one engine per workspace
-           ▼                          ▼
-   ┌───────────────┐          ┌───────────────┐
-   │  liquid       │          │  zetta        │
-   │  source       │          │  data · SQL   │
-   │  control      │          │  search       │
-   │  builds       │          │  machine      │
-   │  deploys      │          │  learning     │
-   └───────────────┘          └───────────────┘
-
-        the operator runs all of it on your clusters
-```
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/architecture-dark.svg">
+  <img src="docs/assets/architecture-light.svg" alt="How Orama Lake fits together: people, scripts and agents reach lake through one API served as REST, OpenAPI and MCP. lake holds AI Projects and the platform services. Under it are liquid, zetta, and the agents and models. The operator runs all of it as infrastructure as software, from one management cluster to dedicated leaf clusters." width="100%">
+</picture>
 
 | | |
 |---|---|
