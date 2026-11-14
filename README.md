@@ -12,7 +12,7 @@
 Everything you need to design, train, and ship real AI that learned on your own data,<br>
 on your own hardware, in minutes instead of months.
 
-[**Install**](docs/install/README.md) · [Why](#why-orama-lake) · [What you get](#what-you-get) · [AI Projects](#ai-projects) · [Infrastructure as software](#infrastructure-as-software) · [Batteries included](#batteries-included) · [What it replaces](#what-it-replaces) · [How it fits](#how-it-fits-together) · [Get the source](#get-the-source) · [The components](#the-components)
+[**Install**](docs/install/README.md) · [Why](#why-orama-lake) · [What you get](#what-you-get) · [AI Projects](#ai-projects) · [Infrastructure as software](#infrastructure-as-software) · [Batteries included](#batteries-included) · [What it replaces](#what-it-replaces) · [How it fits](#how-it-fits-together) · [For agents](#for-agents) · [Get the source](#get-the-source) · [The components](#the-components)
 
 </div>
 
@@ -335,6 +335,21 @@ wikis, a content delivery network, business-intelligence dashboards, notebooks a
 | **Run it** | On one machine or a small cluster, [with k0s and the operator](docs/install/README.md#on-a-fresh-linux-machine) |
 | **Scale it** | On any Kubernetes cluster, [with the helmfile](docs/install/README.md#management-cluster) |
 | **Air-gapped** | From one bundle, with nothing fetched from outside ([the air-gapped variant](https://github.com/oramasearch/orama-operator/blob/main/docs/install/k0s.md#air-gapped-variant)) |
+
+## For agents
+
+Every Lake describes itself to an agent, at its own address. These are lake.live's:
+
+| | |
+|---|---|
+| [`llms.txt`](https://lake.live/llms.txt) | The agents' guide: what Lake does, which tools for which task, and the flows |
+| [`llms-full.txt`](https://lake.live/llms-full.txt) | Every tool with its input schema |
+| OpenAPI | The same capabilities as OpenAPI 3.1, per region: [Europe](https://eu.lake.live/v1/openapi.json) · [United States](https://us.lake.live/v1/openapi.json) |
+| MCP | `https://<region>.lake.live/mcp`, the same capabilities as tools |
+| [The `lake` skill](.claude/skills/lake/SKILL.md) | A Claude skill for working in a Lake. It is in this repository, so a session opened here has it, and it links to the development skills in each component |
+
+A Lake you install serves all of them itself: `/llms.txt`, `/llms-full.txt`, `/v1/openapi.json`,
+`/mcp` and `/skills/lake/SKILL.md`.
 
 ## Get the source
 
