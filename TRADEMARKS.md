@@ -7,7 +7,7 @@ you may use them.
 ## The marks
 
 The names **Orama**, **Orama Lake**, **Orama Zetta** and **lake.live**, and the Orama logos
-(including those in [`docs/assets/`](docs/assets/README.md)), are trademarks of Orama Search Inc.
+(including those in [`docs/assets/`](docs/assets/README.md)), are trademarks of OramaSearch, Inc.
 They are called "the marks" below.
 
 A trademark tells people who a product comes from. This policy protects that and nothing more. It
@@ -46,5 +46,5 @@ does not limit what the license lets you do with the code.
 ## Asking
 
 For anything this page does not cover, or to ask for permission, write to
-**trademarks@orama.com**. Orama Search Inc. may update this policy; the version in this repository
+**trademarks@orama.com**. OramaSearch, Inc. may update this policy; the version in this repository
 is the current one.

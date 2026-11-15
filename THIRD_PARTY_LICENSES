@@ -8,14 +8,14 @@ Each component carries its own LICENSE and THIRD_PARTY_LICENSES, which list ever
 font and model it uses:
 
 Component          License                       Where its notices are
-liquid-bridge      MIT (Orama Search Inc.)       each component under modules/liquid-bridge/modules/
+liquid-bridge      MIT (OramaSearch, Inc.)       each component under modules/liquid-bridge/modules/
                                                  (liquid, lake, zetta-tunnel, the sidecars, and k0s, a
                                                  fork under its upstream Apache-2.0 license)
-zetta-bridge       MIT (Orama Search Inc.)       each component under modules/zetta-bridge/modules/
+zetta-bridge       MIT (OramaSearch, Inc.)       each component under modules/zetta-bridge/modules/
                                                  (zetta, the agents and their corpora, the models)
-orama-operator     MIT (Orama Search Inc.)       modules/orama-operator/THIRD_PARTY_LICENSES
-agent-experiments  MIT (Orama Search Inc.)       modules/agent-experiments/THIRD_PARTY_LICENSES
-model-runtime      MIT (Orama Search Inc.)       modules/model-runtime/THIRD_PARTY_LICENSES
+orama-operator     MIT (OramaSearch, Inc.)       modules/orama-operator/THIRD_PARTY_LICENSES
+agent-experiments  MIT (OramaSearch, Inc.)       modules/agent-experiments/THIRD_PARTY_LICENSES
+model-runtime      MIT (OramaSearch, Inc.)       modules/model-runtime/THIRD_PARTY_LICENSES
 
 Forks of third-party code keep their upstream licenses (k0s: Apache-2.0; corosio and the http
 library: BSL-1.0). Model weights carry their base model's license (the base agent is a fine-tune of
