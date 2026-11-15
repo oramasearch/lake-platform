@@ -301,11 +301,6 @@ repository and use its skill. Read the component's `CLAUDE.md` or `AGENTS.md` fi
 | Test a cluster by injecting one fault | [`chaos-experiment`](https://github.com/oramasearch/zetta/blob/main/.claude/skills/chaos-experiment/SKILL.md) | zetta |
 | Write simulated user tests over MCP | [`mcp-journeys`](https://github.com/oramasearch/zetta/blob/main/.claude/skills/mcp-journeys/SKILL.md) | zetta |
 | Change the desktop interface | [`gui-dev`](https://github.com/oramasearch/zetta/blob/main/.claude/skills/gui-dev/SKILL.md) | zetta |
-| Add a solution module or methodology, across zetta and lake | [`add-solution-module`](https://github.com/oramasearch/zetta-bridge/blob/main/.claude/skills/add-solution-module/SKILL.md) | zetta-bridge |
-| Create a new agent | [`new-agent`](https://github.com/oramasearch/zetta-bridge/blob/main/.claude/skills/new-agent/SKILL.md) | zetta-bridge |
-| Create an evaluation profile for the agents | [`new-eval-profile`](https://github.com/oramasearch/zetta-bridge/blob/main/.claude/skills/new-eval-profile/SKILL.md) | zetta-bridge |
-| Build, verify and deploy liquid, lake and the IDE | [`liquid-dev`](https://github.com/oramasearch/liquid-bridge/blob/main/.claude/skills/liquid-dev/SKILL.md) | liquid-bridge |
-| Add a kind of managed service to lake | [`lake-service`](https://github.com/oramasearch/liquid-bridge/blob/main/.claude/skills/lake-service/SKILL.md) | liquid-bridge |
 
 The components' own guides:
 [lake](https://github.com/oramasearch/lake/blob/main/CLAUDE.md) ·
