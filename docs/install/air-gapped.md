@@ -59,19 +59,18 @@ that change to the script is part of building the bundle.
 
 **Your own Kubernetes, with your own registry.** Push every image in `images/images.tar` to your
 registry (for example with `skopeo copy --all oci-archive:...` or `crane push`), install the charts
-from `charts/`, and set the registry in one place: the operator's image registry setting
-(https://github.com/oramasearch/orama-operator/issues/1186) makes every default image come from your
-mirror.
+from `charts/`, and set the registry in one place: the operator's image registry setting (planned)
+makes every default image come from your mirror.
 
 ## What the stack must do for this to hold
 
 - **No default calls out.** No image, model, host, telemetry endpoint or license check outside the
   bundle. Telemetry is off unless it is turned on.
 - **Every image is pinned by digest** in `release.yaml`, so a mirror holds exactly what was checked.
-- **The model is local.** The agents and the quickstart run on the model in the bundle
-  (https://github.com/oramasearch/zetta-bridge/issues/2), and the weights' licenses allow carrying
-  them in.
-- **One registry setting** moves every default image to a mirror (https://github.com/oramasearch/orama-operator/issues/1186).
+- **The model is local.** The agents and the quickstart run on the model in the bundle, and the
+  weights' licenses allow carrying them in. Today the agents call a hosted model; moving them is
+  planned.
+- **One registry setting** moves every default image to a mirror. Planned in the operator.
 
 ## How it is built
 

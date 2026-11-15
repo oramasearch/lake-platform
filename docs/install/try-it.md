@@ -89,16 +89,16 @@ The image is part of a stack release ([`docs/release/README.md`](../release/READ
 
 ## What is missing today
 
-| Missing | Where it is tracked |
+| Missing | In which component |
 |---|---|
-| The image itself, and a check that the fork runs in a container on Docker Desktop for macOS and Windows | https://github.com/oramasearch/k0s/issues/45 |
-| A first administrator and a one-time sign-in link on first start; native sign-in and billing off by default | https://github.com/oramasearch/lake/issues/1307 |
-| lake's model gateway calling a local model with no key, and a default model | https://github.com/oramasearch/lake/issues/1308 |
-| The operator running the local model server for a `Lake` | https://github.com/oramasearch/orama-operator/issues/1187 |
-| A model server on the OpenAI-compatible API | https://github.com/oramasearch/model-runtime/issues/3 |
-| The agents checked on the local model | https://github.com/oramasearch/zetta-bridge/issues/2 |
-| The base model image the operator copies into each workspace | https://github.com/oramasearch/base-agent-0.6b/issues/6 |
-| Public images, so nothing needs a credential | https://github.com/oramasearch/orama-operator/issues/1186 |
+| The image itself, and a check that the fork runs in a container on Docker Desktop for macOS and Windows | k0s fork |
+| A first administrator and a one-time sign-in link on first start; native sign-in and billing off by default | lake |
+| lake's model gateway calling a local model with no key, and a default model | lake |
+| The operator running the local model server for a `Lake` | orama-operator |
+| A model server on the OpenAI-compatible API | model-runtime |
+| The agents checked on the local model | the agents |
+| The base model image the operator copies into each workspace | base-agent-0.6b |
+| Public images, so nothing needs a credential | orama-operator, and the image release |
 
 The hardware numbers on this page are what the image must meet. They are replaced with measured
 numbers when it exists.

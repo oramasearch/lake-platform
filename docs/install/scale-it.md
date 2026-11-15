@@ -105,8 +105,7 @@ needs.
 
 ## What is missing today
 
-- Public images and chart, so no credential is needed:
-  https://github.com/oramasearch/orama-operator/issues/1186
+- Public images and chart, so no credential is needed, and operator defaults that point at them.
 - An umbrella chart that installs step 1, step 2 and a Lake in one `helm install`. Until it exists,
   the steps above, or the [helmfile](README.md#one-cluster), do the same.
 - Proof on more than one managed Kubernetes provider and on a plain upstream cluster.
