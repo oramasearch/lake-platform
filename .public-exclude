@@ -1,0 +1,10 @@
+# Paths kept out of the public export of this repository (one scrubbed export commit; see the
+# release process). Internal agent and process instructions stay in the private repository.
+#
+# This repository is written to be public, so its CLAUDE.md and .claude/skills/ (the platform's
+# agent guide and the `lake` skill) ship with it on purpose and are not listed here. Only local
+# agent state, which is never meant to be committed, is excluded.
+AGENTS.md
+.claude/settings.local.json
+.codex/
+.cursor/
