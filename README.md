@@ -366,12 +366,14 @@ The names above belong to their owners and are used only to say what each part s
 
 ## Ways to run it
 
-| | |
-|---|---|
-| **Try it** | On a laptop |
-| **Run it** | On one machine or a small cluster, [with k0s and the operator](docs/install/README.md#on-a-fresh-linux-machine) |
-| **Scale it** | On any Kubernetes cluster, [with the helmfile](docs/install/README.md#management-cluster) |
-| **Air-gapped** | From one bundle, with nothing fetched from outside ([the air-gapped variant](https://github.com/oramasearch/orama-operator/blob/main/docs/install/k0s.md#air-gapped-variant)) |
+| | | |
+|---|---|---|
+| **Try it** | On a laptop, with one command: no account, no API key, a model that runs locally | [Try it](docs/install/try-it.md) (not available yet) |
+| **Run it** | On one machine or a small cluster, with k0s and the operator | [Run it](docs/install/run-it.md) |
+| **Scale it** | On any Kubernetes cluster, with the operator's Helm chart | [Scale it](docs/install/scale-it.md) |
+| **Air-gapped** | From one signed bundle, with nothing fetched from outside | [Air-gapped](docs/install/air-gapped.md) (a design) |
+
+Every way installs the versions in one [release manifest](docs/release/README.md), `release.yaml`.
 
 ## For agents
 
