@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: MIT
+
 """Generate the Orama Lake logo: the O of Orama, holding a lake.
 
 Usage: python3 docs/assets/logo.py docs/assets

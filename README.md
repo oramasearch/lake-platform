@@ -482,7 +482,9 @@ Metis is our professional services program. If you'd like some help designing or
 ## License
 
 [MIT](LICENSE). Forks of third-party code keep their upstream licenses, and model weights carry their base
-model's license.
+model's license; [THIRD_PARTY_LICENSES](THIRD_PARTY_LICENSES) says where each component's notices are.
+The names and logos are trademarks and are not covered by the license: see [TRADEMARKS.md](TRADEMARKS.md).
+Contributions are welcome under the Developer Certificate of Origin; see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 <div align="center">
 
