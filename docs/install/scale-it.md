@@ -27,15 +27,21 @@ The operator's [`helmfile.yaml`](https://github.com/oramasearch/orama-operator/b
 is the one way the platform is installed. It holds every chart the operator builds on, at the versions
 it is tested with: CloudNativePG for lake's control plane, cert-manager, ingress-nginx, the operators
 for the data services a workspace can add (Kafka, ClickHouse, TiDB, Cassandra, Valkey), and
-observability. Then it installs the operator itself. A management cluster and every cluster it manages
+observability (left out below). Then it installs the operator itself. A management cluster and every cluster it manages
 are installed from the same file, so they are the same cluster.
 
 ```sh
 cd modules/orama-operator
-helmfile -l app!=orama-operator sync --wait --concurrency 1
+helmfile -l 'app!=orama-operator,name!=kube-prometheus-stack,name!=perses' sync --wait --concurrency 1
 helmfile -l app=orama-operator sync --wait --set operator.image.tag=$(git describe --tags)
 cd ../..
 ```
+
+**Observability is left out** (`name!=kube-prometheus-stack,name!=perses`). The helmfile's
+observability charts pull Orama's own mirrors of their images, which are not distributed. Lake and
+the operator work without them: the operator writes its alerting rules and dashboards once the
+monitoring CRDs exist, and says in its status that they are missing until then. To add monitoring,
+install your own Prometheus stack.
 
 A chart your cluster already provides (its own ingress controller, cert-manager) is turned off in the
 helmfile with `installed: false`, never installed a second way.

@@ -35,7 +35,9 @@ git -C modules/liquid-bridge/modules/lake describe --tags   # <lake-version>
 
 Every install below installs the platform and the operator **from the operator's helmfile**
 (`modules/orama-operator/helmfile.yaml`): it is the one install path, on a laptop, a server or a
-management cluster. Only how the Kubernetes underneath is created differs.
+management cluster. Only how the Kubernetes underneath is created differs. Its observability charts
+(`kube-prometheus-stack`, `perses`) are left out: they pull Orama's own image mirrors, which are
+not distributed, and the platform works without them.
 
 ## One cluster
 
@@ -48,7 +50,7 @@ You need Kubernetes 1.29 or later, a default StorageClass, and `kubectl`, Helm 3
 
 ```sh
 cd modules/orama-operator
-helmfile -l app!=orama-operator sync --wait --concurrency 1
+helmfile -l 'app!=orama-operator,name!=kube-prometheus-stack,name!=perses' sync --wait --concurrency 1
 helmfile -l app=orama-operator sync --wait --set operator.image.tag=<operator-version>
 ```
 
@@ -106,7 +108,7 @@ same step as above:
 
 ```sh
 cd modules/orama-operator
-helmfile -l app!=orama-operator sync --wait --concurrency 1
+helmfile -l 'app!=orama-operator,name!=kube-prometheus-stack,name!=perses' sync --wait --concurrency 1
 helmfile -l app=orama-operator sync --wait --set operator.image.tag=<operator-version>
 ```
 
