@@ -479,6 +479,14 @@ models, and the operator that runs them. What goes on top is yours.
 
 Metis is our professional services program. If you'd like some help designing or launching your AI and intelligence, we'd love to chat (even if you'd just like to say hello).  https://orama.com/journey
 
+## Contribute
+
+Questions, ideas and pull requests are welcome. [`CONTRIBUTING.md`](CONTRIBUTING.md) says how to build
+a component and send a change (contributors sign the [Contributor License Agreement](CLA.md) once).
+[`GOVERNANCE.md`](GOVERNANCE.md) says how decisions are made and how to become a maintainer, and
+[`ROADMAP.md`](ROADMAP.md) what comes next. Everyone follows the [code of conduct](CODE_OF_CONDUCT.md).
+The names and logos are covered by [`TRADEMARKS.md`](TRADEMARKS.md).
+
 ## License
 
 [MIT](LICENSE). Forks of third-party code keep their upstream licenses, and model weights carry their base
