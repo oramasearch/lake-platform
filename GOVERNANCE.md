@@ -2,12 +2,12 @@
 
 How Orama Lake is run: who decides what, how someone becomes a maintainer, and what Orama keeps.
 
-Orama Lake is led by Orama Search Inc. ("Orama"), which wrote most of it and runs it as a hosted
+Orama Lake is led by OramaSearch, Inc. ("Orama"), which wrote most of it and runs it as a hosted
 service. Decisions are made in public, by the maintainers of each component, and anyone can become one.
 
 ## The code stays MIT
 
-The code Orama Lake releases is under the [MIT license](LICENSE), and it stays under it. There is no
+The code Orama Lake releases is under the [MIT license](LICENSE), and Orama intends to keep it there. There is no
 enterprise edition of the code and no feature held back for paying customers.
 
 Contributions come in under the [Contributor License Agreement](CLA.md) (CLA), which each contributor
@@ -64,7 +64,7 @@ reason.
 Said plainly, so there is no surprise later:
 
 - **The names and logos.** "Orama", "Orama Lake" and the component names and logos are trademarks of
-  Orama Search Inc. The code is MIT; the names are not. A fork can do anything the license allows with
+  OramaSearch, Inc. The code is MIT; the names are not. A fork can do anything the license allows with
   the code, and picks its own name. See [`TRADEMARKS.md`](TRADEMARKS.md).
 - **The security process.** Vulnerabilities are reported privately to `security@orama.com`
   ([`SECURITY.md`](SECURITY.md)), and fixes are released before details are public.
