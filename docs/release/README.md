@@ -2,11 +2,12 @@
 
 [`release.yaml`](../../release.yaml) at the root of this repository is **one version of the whole
 stack**. It pins every component (its source commit, its version, and the images, charts and binaries
-built from it), so a user installs "Orama Lake 0.9" and never has to work out which zetta goes with
+built from it), so a user installs "Orama Lake 0.1" and never has to work out which zetta goes with
 which lake.
 
-**State:** a draft. It records what this repository pins today. No stack version has been released
-yet: every `digest` is empty and `published` is `false`.
+**State:** the candidate for v0.1.0, the first release. Every component is pinned at its released
+version, and `scripts/check-release-manifest.py` passes. The image `digest` fields are still empty,
+and `published` stays `false` until the images are signed.
 
 ## Who reads it
 
@@ -25,7 +26,7 @@ schema: 1                      # the format of this file
 stack:
   name: Orama Lake
   version: 0.9.0               # the stack version: one number for the whole platform
-  status: draft                # draft, candidate or released
+  status: candidate            # draft, candidate or released
   published: false             # true once every image is public and signed
 registry: docker.io/oramasearch   # every image name is relative to it; a mirror overrides it here
 components:
@@ -79,16 +80,11 @@ A stack release is cut after each component it pins has been released on its own
 
 ## What is not decided yet
 
-- **The public registry.** `registry` names where the images live today, which is private. The
-  release changes it to the public registry, in this one field.
-- **0.9 or 1.0.** The draft says 0.9.0: a first public release, with 1.0 once upgrades have been
-  through a few releases with outside users.
+- **Image signatures and digests.** The images are public on Docker Hub; their digests go in the
+  manifest, and `published` becomes `true`, once they are signed.
 
-## What the draft shows today
+## What v0.1.0 still lacks
 
-- `liquid` is pinned seven commits after `v0.1.0`, while `v0.2.0` is tagged. The pin moves to a tag
-  before a release.
-- `lake-mcp-runner` is not pinned by this repository. It has to be, before a release.
-- `liquify`, `lake-sqlite`, `lake-duckdb`, `lake-polars`, `lake-builder`, `methodology-runtime`,
-  `model-runtime`, `base-agent-0.6b` and the `k0s` fork have no release tag yet.
-- The base model's weights have no license stated yet.
+- `lake-mcp-runner` is not pinned by this repository.
+- The `k0s` fork is pinned by commit; it has no release tag of its own.
+- The `try` image (`lake-try`) is not built yet, so the *Try it* path waits on it.

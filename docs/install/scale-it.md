@@ -4,9 +4,8 @@ For a platform team with a cluster already: install the operator's chart and the
 then declare one `Lake`. The operator runs everything else. From here a cluster can also become a
 [management cluster](README.md#management-cluster) that creates and runs others.
 
-> **Status:** the chart is published with every operator release, but to a private repository, so
-> today it needs a registry credential. The steps below are the same once it is public, without the
-> credential. Tested so far on one managed Kubernetes provider and on the platform's k0s fork.
+> **Status:** the chart is published with every operator release, to a repository that is still
+> private, so it needs a registry credential for now. Tested so far on one managed Kubernetes provider and on the platform's k0s fork.
 
 ## Before you start
 
