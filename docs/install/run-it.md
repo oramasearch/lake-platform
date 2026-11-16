@@ -5,9 +5,8 @@ operator, and a Lake, installed as services on a Linux host. Add machines later 
 cluster.
 
 > **Status:** the script exists and is written from the operator's procedure, but it has not yet been
-> run end to end on a clean host. It builds k0s from source, and while the images are private it
-> needs a registry credential. The packaged form (a k0s binary from the release, no source checkout,
-> no credential) follows the stack release.
+> run end to end on a clean host. It builds k0s from source. The packaged form (a k0s binary from the
+> release, no source checkout) follows a later release.
 
 ## Before you start
 
@@ -15,9 +14,8 @@ cluster.
 - Root access, and Git, curl, Helm 3, GNU Make and Go (Go and Make only while k0s is built from
   source; set `K0S_BINARY` to a built binary to skip them).
 - At least 4 CPUs, 16 GB of memory and 100 GB of disk for one Lake.
-- While the images are private: a pull-only registry credential in `ORAMA_DOCKERHUB_USERNAME` and
-  `ORAMA_DOCKERHUB_TOKEN`. The script checks anonymously first and skips the credential once the images
-  are public.
+- No registry credential: every image is public. `ORAMA_DOCKERHUB_USERNAME` and
+  `ORAMA_DOCKERHUB_TOKEN` are only for pulling from a private mirror.
 
 ## Install
 
@@ -30,7 +28,7 @@ git -C modules/liquid-bridge submodule update --init modules/k0s
 sudo install/install.sh server
 ```
 
-While the images are private, keep the credential across `sudo` without writing it anywhere:
+From a private mirror, keep its credential across `sudo` without writing it anywhere:
 
 ```sh
 read -r -s ORAMA_DOCKERHUB_TOKEN; export ORAMA_DOCKERHUB_TOKEN ORAMA_DOCKERHUB_USERNAME=<user>

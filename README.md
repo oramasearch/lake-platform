@@ -368,7 +368,7 @@ The names above belong to their owners and are used only to say what each part s
 
 | | | |
 |---|---|---|
-| **Try it** | On a laptop, with one command: no account, no API key, a model that runs locally | [Try it](docs/install/try-it.md) (not available yet) |
+| **Try it** | On a laptop, on a single-node k0s or k3s: no account and no credential | [Try it](docs/install/try-it.md) |
 | **Run it** | On one machine or a small cluster, with k0s and the operator | [Run it](docs/install/run-it.md) |
 | **Scale it** | On any Kubernetes cluster, with the operator's Helm chart | [Scale it](docs/install/scale-it.md) |
 | **Air-gapped** | From one signed bundle, with nothing fetched from outside | [Air-gapped](docs/install/air-gapped.md) (a design) |

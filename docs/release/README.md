@@ -87,4 +87,4 @@ A stack release is cut after each component it pins has been released on its own
 
 - `lake-mcp-runner` is not pinned by this repository.
 - The `k0s` fork is pinned by commit; it has no release tag of its own.
-- The `try` image (`lake-try`) is not built yet, so the *Try it* path waits on it.
+- The one-command `try` image (`lake-try`) is not built yet; *Try it* runs on a local k0s meanwhile.
