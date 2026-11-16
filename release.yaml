@@ -1,0 +1,237 @@
+# The Orama Lake release manifest.
+#
+# One stack version pins every component: its source commit, its version, and the images and other
+# artifacts built from it. The installer, the Helm path, the air-gapped bundle and the operator's
+# built-in defaults all read this file, so a user never has to work out which zetta goes with which
+# lake. docs/release/README.md describes every field and how a stack release is cut.
+#
+# State: a candidate for stack v0.1.0. Every component below is pinned at its released version
+# (k0s, a fork, by commit). The image digests are still empty, and `published` is false until every
+# image is signed. The release build fills the digests from the
+# images it builds from each component's release tag; scripts/check-release-manifest.py checks that
+# every `commit` here is the commit this repository pins.
+
+schema: 1
+
+stack:
+  name: Orama Lake
+  version: 0.1.0
+  status: candidate        # draft | candidate | released
+  published: false         # true only once every image below is public and signed
+
+# Where the images below are pulled from. Every image name is relative to it. An air-gapped install
+# or a private mirror overrides it in one place (see docs/install/air-gapped.md).
+registry: docker.io/oramasearch
+
+# What the installer runs for each way in (docs/install/). `try` is the all-in-one image for a
+# laptop: single-node k0s with the operator, lake, a workspace Zetta and a local model inside, and
+# every image preloaded. It is built from the components below at release; it does not exist yet.
+install:
+  try:
+    image: {name: lake-try, tag: 0.1.0, digest: null}
+    port: 4900
+  server:
+    k0s: k0s               # the component below whose binary the server path installs
+    operatorChart: orama-operator
+
+components:
+  # The workspace, and what runs beside it (modules/liquid-bridge).
+  - name: lake
+    repository: https://github.com/oramasearch/lake
+    path: modules/liquid-bridge/modules/lake
+    commit: a881cc31f709788b9f61ef5e3d43836acc32ef0d
+    version: v0.9.0
+    images:
+      - {name: lake, tag: v0.9.0, digest: null}
+  - name: liquid
+    repository: https://github.com/oramasearch/liquid
+    path: modules/liquid-bridge/modules/liquid
+    commit: 66b5bb992cda27b1c4865aebbf414202189a7136
+    version: v0.3.0
+    artifacts:
+      - {kind: binary, name: liquid, platforms: [darwin/arm64, linux/amd64, linux/arm64]}
+  - name: liquify
+    repository: https://github.com/oramasearch/liquify
+    path: modules/liquid-bridge/modules/liquify
+    commit: 618cc31c19115f2f889197ee4eb7266b1655f000
+    version: v0.1.0
+    artifacts:
+      - {kind: desktop, name: liquify, platforms: [darwin/arm64, windows/amd64, linux/amd64]}
+  - name: lake-sqlite
+    repository: https://github.com/oramasearch/lake-sqlite
+    path: modules/liquid-bridge/modules/lake-sqlite
+    commit: bb9994a94c234ec80a948326ab2b14e1653a7bd1
+    version: v0.2.0
+    images:
+      - {name: lake-sqlite, tag: v0.2.0, digest: null}
+  - name: lake-duckdb
+    repository: https://github.com/oramasearch/lake-duckdb
+    path: modules/liquid-bridge/modules/lake-duckdb
+    commit: fe8680962518e6b9fd9510e3184f0f06822b33d2
+    version: v0.2.0
+    images:
+      - {name: lake-duckdb, tag: v0.2.0, digest: null}
+  - name: lake-polars
+    repository: https://github.com/oramasearch/lake-polars
+    path: modules/liquid-bridge/modules/lake-polars
+    commit: 96f94c4c2f07534d516387c22bda80f7a91c42e3
+    version: v0.1.0
+    images:
+      - {name: lake-polars, tag: v0.1.0, digest: null}
+  - name: lake-builder
+    repository: https://github.com/oramasearch/lake-builder
+    path: modules/liquid-bridge/modules/lake-builder
+    commit: 7bef8acbbb539813466ba70551a5fa499b766c80
+    version: v0.1.0
+    images:
+      - {name: lake-builder, tag: v0.1.0, digest: null}
+  - name: app-runtime
+    repository: https://github.com/oramasearch/app-runtime
+    path: modules/liquid-bridge/modules/app-runtime
+    commit: 918ebf1eed57f678d31f55c9c82e5eb5d65baefb
+    version: v0.2.0
+    images:
+      - {name: app-runtime, tag: v0.2.0, digest: null}
+  - name: methodology-runtime
+    repository: https://github.com/oramasearch/methodology-runtime
+    path: modules/liquid-bridge/modules/methodology-runtime
+    commit: 454f519b41fa30b99605112546a166643d25b2a4
+    version: v0.1.0
+    images:
+      - {name: methodology-runtime, tag: v0.1.0, digest: null}
+  - name: k0s
+    repository: https://github.com/oramasearch/k0s
+    path: modules/liquid-bridge/modules/k0s
+    commit: db9032aefe4cd634a8e379f64f3f03f67916bd94
+    version: null          # pinned by commit; no release tag on it
+    license: Apache-2.0
+    artifacts:
+      - {kind: binary, name: k0s, platforms: [linux/amd64, linux/arm64]}
+  - name: lake-mcp-runner
+    repository: https://github.com/oramasearch/lake-mcp-runner
+    path: null             # not pinned by this repository yet; it has to be, before a release
+    commit: null
+    version: null          # pinned by commit; no release tag on it
+    images:
+      - {name: lake-mcp-runner, tag: d98451a, digest: null}
+
+  # The engine, the tunnel, the agents and the models (modules/zetta-bridge).
+  - name: zetta
+    repository: https://github.com/oramasearch/zetta
+    path: modules/zetta-bridge/modules/zetta
+    commit: b2861be59eb9c0926c526a3e255c175b21fd7bad
+    version: v0.6.0
+    images:
+      - {name: zetta, tag: v0.6.0, digest: null}
+  - name: zetta-tunnel
+    repository: https://github.com/oramasearch/zetta-tunnel
+    path: modules/zetta-bridge/modules/zetta-tunnel
+    commit: f26021c3cd477f3ed1c85170c5b10e3d33904652
+    version: v0.3.1
+    images:
+      - {name: zetta-tunnel, tag: v0.3.1, digest: null}
+      - {name: zetta-tunnel-clients, tag: v0.3.1, digest: null}
+  - name: agent-runtime
+    repository: https://github.com/oramasearch/agent-runtime
+    path: modules/zetta-bridge/modules/agent-runtime
+    commit: 4bc4b5b7b68b5a24d8f7d0c9c644ae8d26b40b6f
+    version: v0.3.1
+    images:
+      - {name: agent-runtime, tag: v0.3.1, digest: null}
+  - name: agent-creator
+    repository: https://github.com/oramasearch/agent-creator
+    path: modules/zetta-bridge/modules/agent-creator
+    commit: 58fcd016beda22cbd504552a43eb429fb1ba3904
+    version: v0.3.1
+    images:
+      - {name: agent-creator, tag: v0.3.1, digest: null}
+  - name: agent-application
+    repository: https://github.com/oramasearch/agent-application
+    path: modules/zetta-bridge/modules/agent-application
+    commit: a256372cb993045c4ca7d9ccd2147495ba0c77ca
+    version: v0.3.1
+    images:
+      - {name: agent-application, tag: v0.3.1, digest: null}
+  - name: agent-ask-orama
+    repository: https://github.com/oramasearch/agent-ask-orama
+    path: modules/zetta-bridge/modules/agent-ask-orama
+    commit: cc433176d6e5e0357485f651074beaad838e1000
+    version: v0.3.0
+    images:
+      - {name: agent-ask-orama, tag: v0.3.0, digest: null}
+  - name: agent-project
+    repository: https://github.com/oramasearch/agent-project
+    path: modules/zetta-bridge/modules/agent-project
+    commit: 2dcb97e32384c57299236f7e67311fe7590bd5bc
+    version: v0.3.0
+    images:
+      - {name: agent-project, tag: v0.3.0, digest: null}
+  - name: agent-autosuggest
+    repository: https://github.com/oramasearch/agent-autosuggest
+    path: modules/zetta-bridge/modules/agent-autosuggest
+    commit: c63000062f82b1d9d2cdae1c46af0bc03aa3a4bf
+    version: v0.3.1
+    images:
+      - {name: agent-autosuggest, tag: v0.3.1, digest: null}
+  - name: agent-eval-generator
+    repository: https://github.com/oramasearch/agent-eval-generator
+    path: modules/zetta-bridge/modules/agent-eval-generator
+    commit: 28eded251ffba3980a7954ebf0c7c46d208bbd8a
+    version: v0.3.0
+    images:
+      - {name: agent-eval-generator, tag: v0.3.0, digest: null}
+  - name: agent-project-corpus
+    repository: https://github.com/oramasearch/agent-project-corpus
+    path: modules/zetta-bridge/modules/agent-project-corpus
+    commit: 1c305f00e8a2ad37df2d0b43cb3fdbe516c3bbb6
+    version: v0.3.0
+    images:
+      - {name: agent-project-corpus, tag: v0.3.0, digest: null}
+  - name: agent-autosuggest-corpus
+    repository: https://github.com/oramasearch/agent-autosuggest-corpus
+    path: modules/zetta-bridge/modules/agent-autosuggest-corpus
+    commit: 3bf5451257976006b05aea2b95889fa86a1f2e38
+    version: v0.3.0
+    images:
+      - {name: agent-autosuggest-corpus, tag: v0.3.0, digest: null}
+  - name: base-agent-0.6b
+    repository: https://github.com/oramasearch/base-agent-0.6b
+    path: modules/zetta-bridge/modules/base-agent-0.6b
+    commit: 72d363e4a9b361f5c113efa05aafbef6f2a53f8a
+    version: v0.1.0
+    license: null          # the weights' license is stated on the model card before release
+    images:
+      - {name: base-agent-0.6b, tag: v0.1.0, digest: null}
+
+  # The operator, and the two components no bridge groups yet.
+  - name: orama-operator
+    repository: https://github.com/oramasearch/orama-operator
+    path: modules/orama-operator
+    commit: 075b6d1f256b46db690ff38c507c58be6526a1fe
+    version: v0.12.0
+    images:
+      - {name: orama-operator, tag: v0.12.0, digest: null}
+    charts:
+      - {name: orama-operator, version: 0.11.12, oci: orama-operator-chart, digest: null}
+  - name: agent-experiments
+    repository: https://github.com/oramasearch/agent-experiments
+    path: modules/agent-experiments
+    commit: 3f833474dd2347d2e1b49ab594f7b81a299c831e
+    version: v0.3.0
+    images:
+      - {name: agent-experiments, tag: v0.3.0, digest: null}
+  - name: model-runtime
+    repository: https://github.com/oramasearch/model-runtime
+    path: modules/model-runtime
+    commit: 70bc68005a0dcca735ad8375748ea53977725362
+    version: v0.1.1
+
+# Open-source images the stack runs that are not built from these components. They are pulled from
+# their own registries; an air-gapped bundle carries them too. Each is pinned by digest at release.
+dependencies:
+  charts:
+    - {name: cloudnative-pg, repository: https://cloudnative-pg.github.io/charts, version: 0.29.0, license: Apache-2.0}
+  images:
+    - {ref: ghcr.io/cloudnative-pg/cloudnative-pg:1.30.0, license: Apache-2.0, digest: null}
+    - {ref: ghcr.io/cloudnative-pg/postgresql:18.4-system-trixie, license: PostgreSQL, digest: null}
+    - {ref: docker.io/library/postgres:18-alpine, license: PostgreSQL, digest: null}

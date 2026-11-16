@@ -1,7 +1,18 @@
 # Install Orama Lake
 
-Pick one. Both install the same operator from the same helmfile, so a one-cluster install can grow
-into a management cluster later.
+Four ways in, from a laptop to a network with no way out. Every one installs the same stack, through
+the same operator, at the versions in one [release manifest](../release/README.md).
+
+| | Where | Page |
+|---|---|---|
+| **Try it** | A laptop, with Docker: one command, no account, no API key, a local model | [`try-it.md`](try-it.md) (not available yet) |
+| **Run it** | One Linux machine or a small cluster, with k0s and the operator | [`run-it.md`](run-it.md) |
+| **Scale it** | Any Kubernetes cluster, with the operator's Helm chart | [`scale-it.md`](scale-it.md) |
+| **Air-gapped** | One signed bundle, nothing fetched from outside | [`air-gapped.md`](air-gapped.md) (a design) |
+
+The rest of this page is the install from a checkout with the helmfile, which is how the platform is
+installed today. Pick one of its two forms. Both install the same operator from the same helmfile, so a
+one-cluster install can grow into a management cluster later.
 
 | | What you get | Use it for |
 |---|---|---|
@@ -80,8 +91,8 @@ cd modules/liquid-bridge/modules/k0s
 sudo OPERATOR_CHART="$OLDPWD/modules/orama-operator/chart" hack/lake-on-k0s/install.sh
 ```
 
-`hack/lake-on-k0s/teardown.sh` removes it. To install with no network access at all, follow the
-[air-gapped variant](https://github.com/oramasearch/orama-operator/blob/main/docs/install/k0s.md#air-gapped-variant).
+`hack/lake-on-k0s/teardown.sh` removes it. To install with no network access at all, see [air-gapped](air-gapped.md). [Run it](run-it.md) has the
+same install with more detail.
 
 ## Management cluster
 
