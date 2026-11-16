@@ -12,6 +12,16 @@
 Everything you need to design, train, and ship real AI that learned on your own data,<br>
 on your own hardware, in minutes instead of months.
 
+```sh
+git clone --recurse-submodules https://github.com/oramasearch/lake-platform.git
+cd lake-platform
+claude
+```
+
+```text
+> /lake design, train and ship a model to prod
+```
+
 [**Install**](docs/install/README.md) · [Why](#why-orama-lake) · [What you get](#what-you-get) · [AI Projects](#ai-projects) · [Infrastructure as software](#infrastructure-as-software) · [Batteries included](#batteries-included) · [Use Orama Lake instead of](#use-orama-lake-instead-of) · [How it fits](#how-it-fits-together) · [For agents](#for-agents) · [Get the source](#get-the-source) · [The components](#the-components)
 
 </div>
