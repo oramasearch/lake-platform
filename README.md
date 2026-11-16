@@ -12,7 +12,11 @@
 Everything you need to design, train, and ship real AI that learned on your own data,<br>
 on your own hardware, in minutes instead of months.
 
+<br>
+
 **Ship a model to production with one prompt**
+
+</div>
 
 ```console
 $ git clone --recurse-submodules https://github.com/oramasearch/lake-platform.git
@@ -22,7 +26,11 @@ $ claude
 > /lake design, train and ship a model to prod
 ```
 
+<div align="center">
+
 <sub>Runs in <a href="https://claude.com/claude-code">Claude Code</a>, with the <code>lake</code> skill that ships in this repository.</sub>
+
+<br><br>
 
 [**Install**](docs/install/README.md) · [Why](#why-orama-lake) · [What you get](#what-you-get) · [AI Projects](#ai-projects) · [Infrastructure as software](#infrastructure-as-software) · [Batteries included](#batteries-included) · [Use Orama Lake instead of](#use-orama-lake-instead-of) · [How it fits](#how-it-fits-together) · [For agents](#for-agents) · [Get the source](#get-the-source) · [The components](#the-components)
 
