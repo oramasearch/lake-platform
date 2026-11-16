@@ -194,7 +194,7 @@ A pin moves after the component's change has landed, bottom-up, each step pushed
 
 1. The component's commit is on its remote.
 2. In the bridge: `git add modules/<component>`, commit, push.
-3. Here: `git add modules/<bridge>`, commit, push.
+3. Here: `git add modules/<bridge>` on a branch from `dev`, and a pull request into `dev`. `main` follows at the next release.
 
 Never pin a commit that is not pushed: the next clone breaks. Never move a pin backwards to match an
 old checkout; update the checkout instead (`git submodule update`). A commit in this repository is
@@ -210,7 +210,9 @@ zetta, not by a readiness endpoint alone.
 
 ### Change this repository
 
-- This repository has no `dev` branch. A change here lands on `main`.
+- Changes land on `dev` by pull request (`--base dev`). `main` is the last release and moves only when a release
+  is cut, through one pull request `main` ← `dev`. A release is a tag `vX.Y.Z` on that merge commit, with its notes in
+  [`docs/releases/`](docs/releases/README.md): the component versions it pins, what is not included, known issues.
 - Commit, then push. A commit that stays local is invisible to everyone and breaks pins.
 - When you touch a folder, update its `README.md` in the same change. A new module or a new top-level
   folder also updates the root `README.md` and the layout above.
@@ -237,8 +239,8 @@ zetta, not by a readiness endpoint alone.
 
 - **The detail of an install.** [`docs/install/`](docs/install/README.md) is the short form. The
   full procedures are the operator's, under `modules/orama-operator/docs/install*`; change them there.
-- **A release manifest and packaged installers.** The versions that work together are this
-  repository's pins.
+- **Packaged installers.** The versions that work together are this repository's pins, and each release's notes list
+  them.
 - **The C++ libraries the engine vendors** (the CRDT library, the full-text search library, the
   networking libraries) are submodules of the components that use them. Change them in their own
   repositories.
