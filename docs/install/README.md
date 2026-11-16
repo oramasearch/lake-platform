@@ -5,7 +5,7 @@ the same operator, at the versions in one [release manifest](../release/README.m
 
 | | Where | Page |
 |---|---|---|
-| **Try it** | A laptop, with Docker: one command, no account, no API key, a local model | [`try-it.md`](try-it.md) (not available yet) |
+| **Try it** | A laptop: a single-node k0s or k3s (directly on Linux, in Docker on macOS and Windows), the operator and one Lake; no account, no credential | [`try-it.md`](try-it.md) |
 | **Run it** | One Linux machine or a small cluster, with k0s and the operator | [`run-it.md`](run-it.md) |
 | **Scale it** | Any Kubernetes cluster, with the operator's Helm chart | [`scale-it.md`](scale-it.md) |
 | **Air-gapped** | One signed bundle, nothing fetched from outside | [`air-gapped.md`](air-gapped.md) (a design) |
