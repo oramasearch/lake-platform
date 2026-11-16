@@ -482,7 +482,7 @@ Metis is our professional services program. If you'd like some help designing or
 ## Contribute
 
 Questions, ideas and pull requests are welcome. [`CONTRIBUTING.md`](CONTRIBUTING.md) says how to build
-a component and send a change (sign off with `git commit -s`; there is no CLA).
+a component and send a change (contributors sign the [Contributor License Agreement](CLA.md) once).
 [`GOVERNANCE.md`](GOVERNANCE.md) says how decisions are made and how to become a maintainer, and
 [`ROADMAP.md`](ROADMAP.md) what comes next. Everyone follows the [code of conduct](CODE_OF_CONDUCT.md).
 The names and logos are covered by [`TRADEMARKS.md`](TRADEMARKS.md).

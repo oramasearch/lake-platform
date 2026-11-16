@@ -10,10 +10,11 @@ service. Decisions are made in public, by the maintainers of each component, and
 The code Orama Lake releases is under the [MIT license](LICENSE), and it stays under it. There is no
 enterprise edition of the code and no feature held back for paying customers.
 
-Contributions come in under the [Developer Certificate of Origin](https://developercertificate.org/)
-(a `Signed-off-by` line on each commit), with no contributor license agreement. So each contribution
-keeps the license it came in with, and Orama could not relicense other people's work even if it
-wanted to. That is on purpose.
+Contributions come in under the [Contributor License Agreement](CLA.md) (CLA), which each contributor
+signs once, before their first pull request is merged. Under it the copyright in each contribution is
+assigned to OramaSearch, Inc.; the contributor keeps a licence to use their own contribution for any
+purpose and grants a patent licence for it. Orama then publishes the contribution with the rest of
+the code, under the MIT license.
 
 Forks of third-party code that the stack carries keep their upstream licenses. Model weights carry the
 license stated beside them.
