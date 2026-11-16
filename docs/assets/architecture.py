@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: MIT
+
 """Generate the Orama Lake architecture diagram as light and dark SVGs."""
 import sys
 from html import escape
