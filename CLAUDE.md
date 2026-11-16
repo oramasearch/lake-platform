@@ -281,7 +281,11 @@ Before it is cut:
   agents, the runtimes) is at its repository's latest release tag. A bridge that moved after its last
   pointer here is pinned again, by pull request into `dev`, before the release pull request opens.
 - **Every pin inside the bridges** is checked against its component's latest release tag.
-- **An anonymous recursive clone**, with no SSH key and no credentials, has to succeed.
+- **Every submodule URL is HTTPS**, at every depth, so a clone needs no SSH key and no credentials.
+  Check it in an up-to-date checkout (`git submodule update --init --recursive` first), without
+  cloning again: `git submodule foreach --quiet --recursive 'git config -f .gitmodules --get-regexp url
+  2>/dev/null || true'` together with `git config -f .gitmodules --get-regexp url` prints no line that
+  is not `https://`. Every repository it names is public (`gh repo view <repo> --json visibility`).
 
 ### When a version moves
 
