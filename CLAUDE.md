@@ -168,8 +168,10 @@ are the shapes.
 | lake-polars | Rust | `cargo test` |
 | The agents, agent-runtime, app-runtime, lake-builder | Python, uv | `uv sync && uv run pytest` |
 
-- **Proof is local.** Run the component's own build and its full test suite, and report the counts,
-  what was skipped and what was not run. There is no hosted CI to wait for or to cite.
+- **Proof is local.** There is no hosted CI to wait for or to cite.
+- **For a change, build what changed and write the tests it needs.** The full suite runs once, when a
+  release is cut, and its counts go in the release notes (*Cut a release* below). Say in the pull
+  request what was and was not run.
 - **A crash in a C or C++ component means an AddressSanitizer run**, even if it does not come back on
   a rerun. Build in its own directory with `-fsanitize=address -fno-omit-frame-pointer` and run the
   suite under it. Never call a segfault a flake.
@@ -199,6 +201,68 @@ A pin moves after the component's change has landed, bottom-up, each step pushed
 Never pin a commit that is not pushed: the next clone breaks. Never move a pin backwards to match an
 old checkout; update the checkout instead (`git submodule update`). A commit in this repository is
 one set of versions that work with each other, so move pins that depend on each other together.
+
+### Review pull requests
+
+A maintainer reviews the queue **one pull request at a time**, oldest first, and decides each one.
+Nothing happens to a pull request without that decision: no merge, no comment, no label.
+
+1. **Read everything first:** the description, every comment and review, the commits and the diff.
+2. **Brief it in a few lines:**
+   - **What:** what it changes, and the issue it serves.
+   - **Earlier review:** each point, and whether it is resolved.
+   - **Proof:** the tests the pull request states, and what was not run.
+   - **Ready:** its base is `dev`, it merges cleanly, and it carries no assistant attribution.
+   - **Risk:** only what matters.
+   - **Recommendation:** merge, changes, defer, or close.
+3. **Classify it:**
+   - **Low risk:** docs, tests, licence and contributor files, or a small fix with proof. It merges.
+   - **Critical:** a security hole whose fix should ship now. It merges even if it breaks something,
+     with the break in the release notes.
+   - **Breaking or feature work:** a removed flag, a changed format, new required setup, or a refused
+     input. It is deferred with a comment saying why, and the label `on-hold`.
+4. **A pull request that conflicts with `dev` is rebased onto `dev`, then reviewed again.**
+   - Resolve each conflict by keeping both sides' intent.
+   - Where two changes meet in one function, read both versions before writing the result.
+   - Never stage a submodule pointer (`modules/*`) the pull request does not mean to move.
+5. **Merge with a merge commit.** For a stack, retarget the child to `dev` before merging its parent.
+6. **Comment on every merge and every refusal:** the merge commit, what was checked, and what is owed.
+7. **After a wave of merges, expect breakage where two of them meet**, even though each one built
+   alone. File each meeting point as its own issue, and fix it in its own pull request.
+
+### Cut a release
+
+A release of a component is finished only when all of these are true:
+
+1. **The notes:** `docs/releases/vX.Y.Z.md`, indexed in `docs/releases/README.md`.
+   - What it includes. A first release lists everything.
+   - What it does not include, with the deferred pull requests.
+   - Known issues, security first.
+   - The verification counts.
+   - It claims only what is implemented.
+2. **The version moves everywhere it is written**, and a test reads it from the code rather than
+   repeating the number.
+3. **The full suite runs** on the release branch, on macOS and on Linux where the component builds for
+   both. Its counts go in the notes.
+   - Every failure is fixed in a pull request into `dev`, or filed as an issue and listed as a known
+     issue.
+   - A test that passes alone is load-sensitive: say so on its issue.
+   - A crash means an AddressSanitizer run.
+4. **The notes land on `dev` by pull request.** Then one release pull request promotes `main` ←
+   `dev`, merged with a merge commit and without deleting `dev`. It is the only pull request that ever
+   targets `main`.
+5. **The tag `vX.Y.Z` goes on that merge commit**, and the GitHub release is published from the notes.
+   - Join wrapped lines and make relative links absolute, because a release page shows every newline.
+   - No line of the release text may start with `#`.
+6. **The image is built from the tag**, with the component's own script and never from a branch, and
+   tagged `vX.Y.Z` on the same digest. There is no `latest`.
+7. **The pins follow, bottom-up:** the component, then its bridge, then this repository (*Move a pin*
+   above).
+8. **The README and the repository description** name the release.
+
+**This repository's own release** is a tag here over pins that are each a released component version.
+Before it is cut, every pin is checked against its component's latest release tag. An anonymous
+recursive clone, with no SSH key and no credentials, has to succeed.
 
 ### When a version moves
 
