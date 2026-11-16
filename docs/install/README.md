@@ -7,7 +7,7 @@ the same operator, at the versions in one [release manifest](../release/README.m
 |---|---|---|
 | **Try it** | A laptop: a single-node k0s or k3s (directly on Linux, in Docker on macOS and Windows), the operator and one Lake; no account, no credential | [`try-it.md`](try-it.md) |
 | **Run it** | One Linux machine or a small cluster, with k0s and the operator | [`run-it.md`](run-it.md) |
-| **Scale it** | Any Kubernetes cluster, with the operator's Helm chart | [`scale-it.md`](scale-it.md) |
+| **Scale it** | Any Kubernetes cluster, with the operator's helmfile | [`scale-it.md`](scale-it.md) |
 | **Air-gapped** | One signed bundle, nothing fetched from outside | [`air-gapped.md`](air-gapped.md) (a design) |
 
 The rest of this page is the install from a checkout with the helmfile, which is how the platform is
@@ -33,8 +33,9 @@ git -C modules/orama-operator describe --tags               # <operator-version>
 git -C modules/liquid-bridge/modules/lake describe --tags   # <lake-version>
 ```
 
-If your registry needs a credential to pull the images, create the pull Secret first
-([credentials](https://github.com/oramasearch/orama-operator/blob/main/docs/install/credentials.md)).
+Every install below installs the platform and the operator **from the operator's helmfile**
+(`modules/orama-operator/helmfile.yaml`): it is the one install path, on a laptop, a server or a
+management cluster. Only how the Kubernetes underneath is created differs.
 
 ## One cluster
 

@@ -1,62 +1,44 @@
-# Scale it: any Kubernetes cluster, with Helm
+# Scale it: any Kubernetes cluster, from the helmfile
 
-For a platform team with a cluster already: install the operator's chart and the charts it builds on,
-then declare one `Lake`. The operator runs everything else. From here a cluster can also become a
-[management cluster](README.md#management-cluster) that creates and runs others.
+For a platform team with a cluster already: install the platform and the operator from the operator's
+helmfile, then declare one `Lake`. The operator runs everything else. From here a cluster can also
+become a [management cluster](README.md#management-cluster) that creates and runs others.
 
-> **Status:** the chart is published with every operator release, to a repository that is still
-> private, so it needs a registry credential for now. Tested so far on one managed Kubernetes provider and on the platform's k0s fork.
+> **Status:** tested so far on one managed Kubernetes provider and on the platform's k0s fork.
 
 ## Before you start
 
-- Kubernetes 1.29 or later, a default StorageClass, and `kubectl` and Helm 3.
-- An ingress controller if the Lake should answer on a hostname. The operator works with
-  ingress-nginx, which step 1 installs if you have none.
-- The versions to install: the operator chart and the lake image from the
-  [release manifest](../release/README.md) (`orama-operator` and `lake` in `release.yaml`).
+- Kubernetes 1.29 or later, a default StorageClass, and `kubectl`, Helm 3 and
+  [helmfile](https://helmfile.readthedocs.io/).
+- A load balancer for Services, if the Lake should answer on a hostname: ingress-nginx, which the
+  helmfile installs, takes its address from one.
+- A checkout of this repository at a release, for the helmfile and the versions:
 
 ```sh
-OPERATOR_VERSION=0.11.12     # release.yaml: components[orama-operator].charts[0].version
-LAKE_IMAGE=docker.io/oramasearch/lake:v0.8.1   # release.yaml: components[lake].images[0]
+git clone --recurse-submodules --branch v0.1.0 https://github.com/oramasearch/lake-platform.git
+cd lake-platform
+git -C modules/orama-operator describe --tags                  # the operator version
+git -C modules/liquid-bridge/modules/lake describe --tags      # the lake version
 ```
 
-## 1. The charts the operator builds on
+## 1. The platform and the operator
 
-Postgres for lake's control plane (CloudNativePG), certificates (cert-manager) and, if your cluster
-has none, an ingress controller. The versions are the ones the operator is tested with; its
-[`helmfile.yaml`](https://github.com/oramasearch/orama-operator/blob/main/helmfile.yaml) is the
-source for them.
+The operator's [`helmfile.yaml`](https://github.com/oramasearch/orama-operator/blob/main/helmfile.yaml)
+is the one way the platform is installed. It holds every chart the operator builds on, at the versions
+it is tested with: CloudNativePG for lake's control plane, cert-manager, ingress-nginx, the operators
+for the data services a workspace can add (Kafka, ClickHouse, TiDB, Cassandra, Valkey), and
+observability. Then it installs the operator itself. A management cluster and every cluster it manages
+are installed from the same file, so they are the same cluster.
 
 ```sh
-helm repo add cnpg https://cloudnative-pg.github.io/charts
-helm repo add jetstack https://charts.jetstack.io
-helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-helm repo update
-
-helm upgrade --install cnpg cnpg/cloudnative-pg \
-  --namespace cnpg-system --create-namespace --version 0.29.0 --wait
-helm upgrade --install cert-manager jetstack/cert-manager \
-  --namespace cert-manager --create-namespace --version v1.21.2 --set crds.enabled=true --wait
-helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx \
-  --namespace ingress-nginx --create-namespace --version 4.15.1 --wait   # only if you have none
+cd modules/orama-operator
+helmfile -l app!=orama-operator sync --wait --concurrency 1
+helmfile -l app=orama-operator sync --wait --set operator.image.tag=$(git describe --tags)
+cd ../..
 ```
 
-The data services a workspace can add (Kafka, ClickHouse, TiDB, Cassandra, Valkey) need their own
-operators; the helmfile installs all of them, and a Lake works without them until a workspace asks
-for one.
-
-## 2. The operator
-
-```sh
-helm upgrade --install orama-operator \
-  oci://registry-1.docker.io/oramasearch/orama-operator-chart \
-  --version "$OPERATOR_VERSION" \
-  --namespace orama-system --create-namespace --wait
-```
-
-While the chart and images are private, log Helm in first (`helm registry login registry-1.docker.io`)
-and create the pull Secret the chart names
-([credentials](https://github.com/oramasearch/orama-operator/blob/main/docs/install/credentials.md)).
+A chart your cluster already provides (its own ingress controller, cert-manager) is turned off in the
+helmfile with `installed: false`, never installed a second way.
 
 The operator is the same on every cluster: the same chart, every resource kind, every controller.
 What a cluster does is decided only by the resources you declare on it.
@@ -70,7 +52,7 @@ metadata:
   name: main
 spec:
   namespace: lake
-  image: docker.io/oramasearch/lake:v0.8.1
+  image: docker.io/oramasearch/lake:v0.9.0
   replicas: 1
   host: lake.example.com
   ingressEnabled: true
@@ -91,20 +73,19 @@ a Lake that answers `readyz` but cannot reach a workspace's zetta is not working
 
 | Your cluster has | Do this |
 |---|---|
-| Its own ingress controller | Skip ingress-nginx and set the Lake's ingress class |
+| Its own ingress controller | Set ingress-nginx to `installed: false` in the helmfile, and the Lake's ingress class |
 | Its own identity provider | Configure single sign-on in lake (OIDC or SAML) once it is up |
 | A private registry mirror | Mirror every image in `release.yaml` and its `dependencies`, then follow [air-gapped](air-gapped.md) |
 | Its own Postgres | Not yet: the operator runs lake's Postgres with CloudNativePG |
 
 ## Upgrade
 
-Change `OPERATOR_VERSION` and run step 2 again, then change the Lake's `image`. The operator rolls
-before the lake image that needs it; the release notes of each stack version say what an upgrade
-needs.
+Check out the next release of this repository (`git checkout vX.Y.Z && git submodule update
+--recursive`) and run step 1 again, then change the Lake's `image`. The operator rolls before the lake
+image that needs it; the release notes of each stack version say what an upgrade needs.
 
 ## What is missing today
 
-- Public images and chart, so no credential is needed, and operator defaults that point at them.
-- An umbrella chart that installs step 1, step 2 and a Lake in one `helm install`. Until it exists,
-  the steps above, or the [helmfile](README.md#one-cluster), do the same.
+- An umbrella chart that installs the helmfile's charts and a Lake in one `helm install`. Until it
+  exists, the helmfile is the install.
 - Proof on more than one managed Kubernetes provider and on a plain upstream cluster.

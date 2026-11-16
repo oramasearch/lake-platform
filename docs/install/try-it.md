@@ -9,10 +9,14 @@ It runs on a single-node Kubernetes on your machine. Pick one:
 Docker on macOS and Windows. Any other local Kubernetes works the same way from step 2 (Docker
 Desktop's, kind, minikube).
 
+> **Status:** not yet run end to end on a laptop. The helmfile's observability charts pull Orama's
+> mirrors of their upstream images (`oramasearch/platform-*`), which are not public yet, so until they
+> are, step 3 stops at those charts without a registry credential.
+
 ## Before you start
 
 - **Linux** (amd64 or arm64), or **macOS** or **Windows** with Docker running.
-- `kubectl` and Helm 3.
+- `kubectl`, Helm 3 and [helmfile](https://helmfile.readthedocs.io/).
 - At least 4 CPUs, 16 GB of memory and 50 GB of free disk. No GPU is needed.
 - A checkout of this repository, for the operator chart:
 
@@ -77,18 +81,33 @@ kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisione
 kubectl annotate storageclass local-path storageclass.kubernetes.io/is-default-class=true
 ```
 
-## 3. Install the database operator and the Orama operator
+## 3. Install the platform and the operator, from the helmfile
+
+The operator's [`helmfile.yaml`](https://github.com/oramasearch/orama-operator/blob/main/helmfile.yaml) is
+the one way the platform is installed: the charts the operator builds on (CloudNativePG, cert-manager,
+ingress-nginx, the service operators, observability) at the versions it is tested with, then the
+operator itself. It is the same install as on a production management cluster, so nothing here is a
+laptop-only setup.
 
 ```sh
-helm repo add cnpg https://cloudnative-pg.github.io/charts
-helm upgrade --install cloudnative-pg cnpg/cloudnative-pg \
-  --namespace cnpg-system --create-namespace --version 0.29.0 --wait
-
-helm upgrade --install orama-operator modules/orama-operator/chart \
-  --namespace orama-system --create-namespace --set operator.replicas=1 --wait
+cd modules/orama-operator
+helmfile -l app!=orama-operator sync --wait --concurrency 1
+helmfile -l app=orama-operator sync --wait --set operator.image.tag=$(git describe --tags)
+cd ../..
 ```
 
-The operator chart is the one this checkout pins: orama-operator v0.12.0.
+**On k0s**, which has no load balancer, ingress-nginx's address stays pending and `--wait` would not
+return. Sync it without waiting, and the rest as above:
+
+```sh
+cd modules/orama-operator
+helmfile -l 'app!=orama-operator,name!=ingress-nginx' sync --wait --concurrency 1
+helmfile -l name=ingress-nginx sync
+helmfile -l app=orama-operator sync --wait --set operator.image.tag=$(git describe --tags)
+cd ../..
+```
+
+k3s and k3d have a load balancer built in, so the first form works there.
 
 ## 4. Create a Lake
 
@@ -129,11 +148,11 @@ kubectl -n lake-dev get pods
 Forward lake's service to your machine:
 
 ```sh
-kubectl -n lake-dev get services
-kubectl -n lake-dev port-forward service/<lake's service> 8080:<its port>
+kubectl -n lake-dev port-forward service/lake-hello 4900:80
+curl -fsS http://127.0.0.1:4900/readyz
 ```
 
-Then open `http://localhost:8080`.
+Then open `http://127.0.0.1:4900`.
 
 ## Remove it
 
