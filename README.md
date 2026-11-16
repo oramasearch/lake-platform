@@ -12,7 +12,7 @@
 Everything you need to design, train, and ship real AI that learned on your own data,<br>
 on your own hardware, in minutes instead of months.
 
-[**Install**](docs/install/README.md) · [Why](#why-orama-lake) · [What you get](#what-you-get) · [AI Projects](#ai-projects) · [Infrastructure as software](#infrastructure-as-software) · [Batteries included](#batteries-included) · [What it replaces](#what-it-replaces) · [How it fits](#how-it-fits-together) · [For agents](#for-agents) · [Get the source](#get-the-source) · [The components](#the-components)
+[**Install**](docs/install/README.md) · [Why](#why-orama-lake) · [What you get](#what-you-get) · [AI Projects](#ai-projects) · [Infrastructure as software](#infrastructure-as-software) · [Batteries included](#batteries-included) · [Use Orama Lake instead of](#use-orama-lake-instead-of) · [How it fits](#how-it-fits-together) · [For agents](#for-agents) · [Get the source](#get-the-source) · [The components](#the-components)
 
 </div>
 
@@ -233,7 +233,7 @@ The services a team would otherwise go and get one at a time are already in the 
 | **Connect** | MCP and the API cover 100% of the platform · MCP for every capability, and an MCP client with sign-in and approval for each tool · tunnels and a private network mesh with mutual TLS |
 | **Identity** | Sign-in for the apps you build · secrets and keys · a private certificate authority |
 
-## What it replaces
+## Use Orama Lake instead of
 
 Orama Lake replaces Palantir, Databricks, Snowflake, Railway, GitHub, Git and the long list of
 services around them. A team shipping AI usually buys each of these separately, then spends its time
