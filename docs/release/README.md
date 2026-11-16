@@ -5,7 +5,7 @@ stack**. It pins every component (its source commit, its version, and the images
 built from it), so a user installs "Orama Lake 0.1" and never has to work out which zetta goes with
 which lake.
 
-**State:** the candidate for v0.1.0, the first release. Every component is pinned at its released
+**State:** v0.1.1, a patch of v0.1.0, the first release. Every component is pinned at its released
 version, and `scripts/check-release-manifest.py` passes. The image `digest` fields are still empty,
 and `published` stays `false` until the images are signed.
 
@@ -83,7 +83,7 @@ A stack release is cut after each component it pins has been released on its own
 - **Image signatures and digests.** The images are public on Docker Hub; their digests go in the
   manifest, and `published` becomes `true`, once they are signed.
 
-## What v0.1.0 still lacks
+## What v0.1.1 still lacks
 
 - `lake-mcp-runner` is not pinned by this repository.
 - The `k0s` fork is pinned by commit; it has no release tag of its own.

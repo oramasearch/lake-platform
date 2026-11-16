@@ -129,6 +129,13 @@ its build, its tests and its rules; this file only knows how the parts relate.
 5. **Clusters change through the operator**, or through a resource it reconciles, never by hand.
 6. **A user's secrets** live sealed in their workspace. A Kubernetes Secret is only a projection of
    one, written when a workload has to mount it.
+7. **The platform is installed from one helmfile**, `modules/orama-operator/helmfile.yaml`, on every
+   kind of cluster: a laptop's k0s or k3s, a server, a management cluster. Every install guide in
+   `docs/install/` and every installer script runs `helmfile sync` from it; none installs a chart the
+   helmfile holds (CloudNativePG, cert-manager, ingress-nginx, the operator) with `helm install` of its
+   own. A chart a cluster already has is set to `installed: false` there. The clusters a management
+   cluster creates get the same charts from the operator, and the operator's `cmd/platform_sync_test.go`
+   holds the two the same.
 
 ### Words that have one meaning
 
@@ -267,8 +274,14 @@ A release of a component is finished only when all of these are true:
 8. **The README and the repository description** name the release.
 
 **This repository's own release** is a tag here over pins that are each a released component version.
-Before it is cut, every pin is checked against its component's latest release tag. An anonymous
-recursive clone, with no SSH key and no credentials, has to succeed.
+Before it is cut:
+- **The bridge pointers are up to date.** `modules/liquid-bridge` and `modules/zetta-bridge` each
+  point at their bridge's `main` head (`git ls-tree origin/dev modules/<bridge>` against
+  `gh api repos/oramasearch/<bridge>/commits/main`), and every other pin here (the operator, the
+  agents, the runtimes) is at its repository's latest release tag. A bridge that moved after its last
+  pointer here is pinned again, by pull request into `dev`, before the release pull request opens.
+- **Every pin inside the bridges** is checked against its component's latest release tag.
+- **An anonymous recursive clone**, with no SSH key and no credentials, has to succeed.
 
 ### When a version moves
 

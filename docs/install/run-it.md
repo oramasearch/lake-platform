@@ -41,7 +41,9 @@ with the operator chart from this checkout. It:
 
 1. builds or takes the k0s binary and starts it as a controller with a worker;
 2. waits for Kubernetes and for the fork's components (Cilium, Gateway API, local-path);
-3. installs CloudNativePG and the operator;
+3. installs CloudNativePG and the operator (today with `helm` directly; it moves to the operator's
+   helmfile, the one install path, in
+   [k0s#52](https://github.com/oramasearch/k0s/issues/52));
 4. applies one `Lake` and a route to it, and prints the address it answers on.
 
 To remove it: `sudo modules/liquid-bridge/modules/k0s/hack/lake-on-k0s/teardown.sh`.

@@ -5,7 +5,7 @@
 # built-in defaults all read this file, so a user never has to work out which zetta goes with which
 # lake. docs/release/README.md describes every field and how a stack release is cut.
 #
-# State: a candidate for stack v0.1.0. Every component below is pinned at its released version
+# State: stack v0.1.1. Every component below is pinned at its released version
 # (k0s, a fork, by commit). The image digests are still empty, and `published` is false until every
 # image is signed. The release build fills the digests from the
 # images it builds from each component's release tag; scripts/check-release-manifest.py checks that
@@ -15,7 +15,7 @@ schema: 1
 
 stack:
   name: Orama Lake
-  version: 0.1.0
+  version: 0.1.1
   status: candidate        # draft | candidate | released
   published: false         # true only once every image below is public and signed
 
@@ -28,7 +28,7 @@ registry: docker.io/oramasearch
 # every image preloaded. It is built from the components below at release; it does not exist yet.
 install:
   try:
-    image: {name: lake-try, tag: 0.1.0, digest: null}
+    image: {name: lake-try, tag: 0.1.1, digest: null}
     port: 4900
   server:
     k0s: k0s               # the component below whose binary the server path installs
