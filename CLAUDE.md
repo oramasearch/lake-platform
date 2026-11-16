@@ -48,6 +48,11 @@ of capabilities, so they are always current. **Link to them; never copy them int
 lake-platform/
 ├── README.md                 the front door
 ├── CLAUDE.md                 this file
+├── LICENSE, COPYRIGHT        MIT; the copyright holder is named only here
+├── THIRD_PARTY_LICENSES      where each component's notices are
+├── TRADEMARKS.md             the names and logos are not under the MIT License
+├── CONTRIBUTING.md, CLA.md, CODE_OF_CONDUCT.md    the CLA (copyright assignment); the Contributor Covenant
+├── tools/spdx-headers.py     adds the SPDX-License-Identifier line to every source file
 ├── .claude/skills/           the skills that ship here (the `lake` skill)
 ├── docs/
 │   ├── install/              how to install: the helmfile, or k0s on a fresh machine

@@ -1,0 +1,24 @@
+Third-party software in lake-platform
+
+lake-platform is licensed under the MIT License (see LICENSE). This repository holds documentation,
+two small Python scripts that draw its images (standard library only), and pins of the components
+below as git submodules. It contains no third-party code of its own.
+
+Each component carries its own LICENSE and THIRD_PARTY_LICENSES, which list every library, image,
+font and model it uses:
+
+Component          License                       Where its notices are
+liquid-bridge      MIT (OramaSearch, Inc.)       each component under modules/liquid-bridge/modules/
+                                                 (liquid, lake, zetta-tunnel, the sidecars, and k0s, a
+                                                 fork under its upstream Apache-2.0 license)
+zetta-bridge       MIT (OramaSearch, Inc.)       each component under modules/zetta-bridge/modules/
+                                                 (zetta, the agents and their corpora, the models)
+orama-operator     MIT (OramaSearch, Inc.)       modules/orama-operator/THIRD_PARTY_LICENSES
+agent-experiments  MIT (OramaSearch, Inc.)       modules/agent-experiments/THIRD_PARTY_LICENSES
+model-runtime      MIT (OramaSearch, Inc.)       modules/model-runtime/THIRD_PARTY_LICENSES
+
+Forks of third-party code keep their upstream licenses (k0s: Apache-2.0; corosio and the http
+library: BSL-1.0). Model weights carry their base model's license (the base agent is a fine-tune of
+Qwen3-0.6B, under the Apache License 2.0). Datasets carry the license stated in their cards.
+
+The names and logos are not covered by any of these licenses; see TRADEMARKS.md.
