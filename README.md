@@ -145,7 +145,7 @@ permission and no share of what you make.
 
 ### Swap any part
 
-Bring your own identity provider, or replace any other component with the one your team already
+Bring your own identity provider, or swap any other component for the one your team already
 trusts. Add any open-source database service, and any object storage.
 
 </td>
@@ -235,14 +235,14 @@ The services a team would otherwise go and get one at a time are already in the 
 
 ## Use Orama Lake instead of
 
-Orama Lake replaces Palantir, Databricks, Snowflake, Railway, GitHub, Git and the long list of
-services around them. A team shipping AI usually buys each of these separately, then spends its time
+Use Orama Lake instead of Palantir, Databricks, Snowflake, Railway, GitHub, Git and the long list
+of services around them. A team shipping AI usually buys each of these separately, then spends its time
 making them work together. Here they are one stack, on your own hardware, under one sign-in and one
 API.
 
 ### AI: agents, models and training data
 
-| Replaces | Such as | With |
+| Instead of | Such as | Use |
 |---|---|---|
 | A decision platform | Palantir Foundry and AIP | zetta's decision-policy engine: versioned policies, approvals, holdouts, a ledger and return on investment, with apps and agents on top |
 | A machine-learning platform | AWS SageMaker, Vertex AI, Databricks ML, MLflow | zetta and lake: distributed training, explanations, calibration, methodologies, experiments, a model registry, model import |
@@ -266,7 +266,7 @@ API.
 
 ### Data
 
-| Replaces | Such as | With |
+| Instead of | Such as | Use |
 |---|---|---|
 | A cloud warehouse | Snowflake, BigQuery, Redshift | **zetta**: a replicated store, partitioned tables, SQL, distributed dataframes, compute next to the data |
 | A lakehouse | Databricks, Dremio | zetta |
@@ -284,7 +284,7 @@ API.
 
 ### Developer platform
 
-| Replaces | Such as | With |
+| Instead of | Such as | Use |
 |---|---|---|
 | Version control | Git, Git LFS, Perforce | **liquid** |
 | Code hosting and review | GitHub, GitLab, Bitbucket | lake's repositories |
@@ -301,7 +301,7 @@ API.
 
 ### Hosting and infrastructure
 
-| Replaces | Such as | With |
+| Instead of | Such as | Use |
 |---|---|---|
 | App hosting | Railway, Heroku, Render, Fly.io | lake apps, deployed by liquid |
 | Previews | Vercel, Netlify | A preview per change |
@@ -316,7 +316,7 @@ API.
 
 ### Identity, security and files
 
-| Replaces | Such as | With |
+| Instead of | Such as | Use |
 |---|---|---|
 | Workforce identity and single sign-on | Okta, Microsoft Entra ID | lake identity: single sign-on, provisioning, multi-factor and passkeys |
 | Authentication for the apps you build | Auth0, Clerk, Cognito, Firebase Auth | lake's application authentication |
@@ -324,7 +324,7 @@ API.
 | A private certificate authority | Venafi, Smallstep, AWS Private CA | lake's certificate authority |
 | File storage and sharing | Dropbox, Google Drive, Box | lake drive, synced by liquid |
 
-**What it does not replace:** the hardware or cloud you run it on, payments, team chat, documents and
+**What you still bring:** the hardware or cloud you run it on, payments, team chat, documents and
 wikis, a content delivery network and notebooks.
 
 The names above belong to their owners and are used only to say what each part stands in for.
